@@ -84,9 +84,19 @@ export default function Home() {
     e.preventDefault();
     setFormState("loading");
     try {
-      const { error } = await supabase.from("contacts").insert([
-        { nom: form.nom, email: form.email, societe: form.societe, message: form.message },
-      ]);
+      const { data, error } = await supabase
+  .from("contacts")
+  .insert([
+    {
+      nom: form.nom,
+      email: form.email,
+      societe: form.societe,
+      message: form.message,
+    },
+  ]);
+
+console.log("DATA:", data);
+console.log("ERROR:", error);
 
       console.log("DATA:", data);
       console.log("ERROR:", error);
