@@ -121,13 +121,21 @@ const STATS_VALUES = [
   { value: 24,  suffix: "/7"},
 ];
 
-// ── Animated counter ────────────────────────────────────────────────────────
-function useCounter(target, duration = 1800, started = false) {
+// ── Color palette (logo-inspired: gold + navy + white) ───────────────────────
+// Gold:  #C8A650  (primary accent)
+// Navy:  #0D2B5E  (primary dark)
+// Light navy: #1A3F80
+// White: #FFFFFF  (background)
+// Off-white: #F7F5F0
+// Mid gray: #6B7A99
+// Light gold: #F0E4B8
+
+function useCounter(target: number, duration = 1800, started = false) {
   const [value, setValue] = useState(0);
   useEffect(() => {
     if (!started) return;
-    let t0 = null;
-    const step = (ts) => {
+    let t0: number | null = null;
+    const step = (ts: number) => {
       if (!t0) t0 = ts;
       const p = Math.min((ts - t0) / duration, 1);
       setValue(Math.floor((1 - Math.pow(1 - p, 3)) * target));
@@ -138,8 +146,7 @@ function useCounter(target, duration = 1800, started = false) {
   return value;
 }
 
-// ── Flag image ──────────────────────────────────────────────────────────────
-function Flag({ code, w = 32, h = 22 }) {
+function Flag({ code, w = 32, h = 22 }: { code: string; w?: number; h?: number }) {
   return (
     <img
       src={`https://flagcdn.com/w80/${code}.png`}
@@ -150,8 +157,7 @@ function Flag({ code, w = 32, h = 22 }) {
   );
 }
 
-// ── StatCard ────────────────────────────────────────────────────────────────
-function StatCard({ value, suffix, label, started }) {
+function StatCard({ value, suffix, label, started }: { value: number; suffix: string; label: string; started: boolean }) {
   const count = useCounter(value, 1800, started);
   return (
     <div style={s.statCard}>
@@ -161,8 +167,7 @@ function StatCard({ value, suffix, label, started }) {
   );
 }
 
-// ── Language switcher ───────────────────────────────────────────────────────
-function LangSwitcher({ lang, setLang, size = 28 }) {
+function LangSwitcher({ lang, setLang, size = 28 }: { lang: string; setLang: (l: string) => void; size?: number }) {
   return (
     <div style={{ display: "flex", gap: 5, alignItems: "center" }}>
       <button
@@ -183,16 +188,15 @@ function LangSwitcher({ lang, setLang, size = 28 }) {
   );
 }
 
-// ── Page ────────────────────────────────────────────────────────────────────
 export default function Home() {
-  const [lang, setLang]            = useState("fr");
+  const [lang, setLang]            = useState<"fr" | "en">("fr");
   const [scrolled, setScrolled]    = useState(false);
   const [statsStarted, setStats]   = useState(false);
-  const [activeService, setActive] = useState(null);
+  const [activeService, setActive] = useState<number | null>(null);
   const [menuOpen, setMenu]        = useState(false);
   const [form, setForm]            = useState({ nom: "", email: "", societe: "", message: "" });
-  const [formState, setFormState]  = useState("idle");
-  const statsRef = useRef(null);
+  const [formState, setFormState]  = useState<"idle" | "loading" | "success" | "error">("idle");
+  const statsRef = useRef<HTMLElement>(null);
   const t = T[lang];
 
   useEffect(() => {
@@ -207,25 +211,19 @@ export default function Home() {
     return () => obs.disconnect();
   }, []);
 
-  async function handleSubmit(e) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setFormState("loading");
     try {
       const res = await fetch("https://formspree.io/f/xwvyrjod", {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({
-          nom:     form.nom,
-          email:   form.email,
-          societe: form.societe,
-          message: form.message,
-        }),
+        body: JSON.stringify(form),
       });
       if (!res.ok) throw new Error("Formspree error");
       setFormState("success");
       setForm({ nom: "", email: "", societe: "", message: "" });
-    } catch (err) {
-      console.error(err);
+    } catch {
       setFormState("error");
     }
   }
@@ -238,43 +236,70 @@ export default function Home() {
         @keyframes slideDown { from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:translateY(0)} }
         *{box-sizing:border-box;margin:0;padding:0}
         a{text-decoration:none}
-        .nav-link:hover{color:#C8A96E!important}
-        .service-card:hover{background:rgba(200,169,110,0.07)!important;border-color:rgba(200,169,110,0.4)!important;transform:translateY(-4px)!important}
-        .country-card:hover{border-color:rgba(200,169,110,0.35)!important}
-        .btn-primary:hover{opacity:0.86!important}
+
+        /* ── Color tokens ── */
+        :root {
+          --gold:       #C8A650;
+          --gold-light: #F0E4B8;
+          --gold-dark:  #9A7C30;
+          --navy:       #0D2B5E;
+          --navy-mid:   #1A3F80;
+          --navy-light: #E8EEF8;
+          --white:      #FFFFFF;
+          --off-white:  #F7F5F0;
+          --text-main:  #0D2B5E;
+          --text-muted: #6B7A99;
+          --border:     rgba(13,43,94,0.12);
+          --border-gold:rgba(200,166,80,0.35);
+        }
+
+        .nav-link:hover{color:var(--gold)!important}
+        .service-card:hover{
+          border-color:var(--gold)!important;
+          box-shadow:0 8px 32px rgba(200,166,80,0.15)!important;
+          transform:translateY(-4px)!important;
+        }
+        .country-card:hover{border-color:var(--gold)!important;box-shadow:0 4px 20px rgba(200,166,80,0.12)!important}
+        .btn-primary:hover{background:var(--navy-mid)!important;color:#fff!important}
+        .btn-gold:hover{opacity:0.88!important}
         .submit-btn:hover{opacity:0.88!important}
-        input:focus,textarea:focus{border-color:rgba(200,169,110,0.5)!important;outline:none}
+        input:focus,textarea:focus{border-color:var(--gold)!important;outline:none;box-shadow:0 0 0 3px rgba(200,166,80,0.12)!important}
+
         .lang-btn{background:transparent;border:2px solid transparent;border-radius:4px;cursor:pointer;padding:3px 3px 1px;transition:border-color 0.2s,transform 0.15s;display:inline-flex;align-items:center;line-height:1}
         .lang-btn:hover{transform:scale(1.1)}
-        .lang-btn.active{border-color:#C8A96E}
+        .lang-btn.active{border-color:var(--gold)}
+
         .mobile-lang{display:none}
         .hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px}
-        .hamburger span{display:block;width:22px;height:2px;background:#C8A96E;border-radius:2px;transition:transform 0.25s,opacity 0.25s}
-        .mobile-menu{display:none;position:relative;left:0;right:0;z-index:190;background:rgba(6,14,35,0.98);backdrop-filter:blur(14px);flex-direction:column;padding:18px 22px 26px;gap:2px;border-bottom:1px solid rgba(200,169,110,0.1);animation:slideDown 0.2s ease}
-        .mobile-link{color:#8896B0;font-size:15px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+        .hamburger span{display:block;width:22px;height:2px;background:var(--navy);border-radius:2px;transition:transform 0.25s,opacity 0.25s}
+        .mobile-menu{display:none;position:relative;left:0;right:0;z-index:190;background:#fff;flex-direction:column;padding:18px 22px 26px;gap:2px;border-bottom:1px solid var(--border);box-shadow:0 8px 24px rgba(13,43,94,0.1);animation:slideDown 0.2s ease}
+        .mobile-link{color:var(--text-muted);font-size:15px;padding:12px 0;border-bottom:1px solid var(--border)}
+
+        /* Decorative gold line accent */
+        .gold-line::before{content:'';display:block;width:40px;height:3px;background:var(--gold);margin-bottom:12px;border-radius:2px}
 
         @media(max-width:768px){
           .hamburger{display:flex!important}
           .desktop-nav{display:none!important}
           .mobile-lang{display:block!important}
           .mobile-menu.open{display:flex!important}
-          .hero-section{padding:40px 22px 32px!important;min-height:auto!important}
-          .hero-title{font-size:46px!important}
+          .hero-section{padding:48px 22px 40px!important;min-height:auto!important}
+          .hero-title{font-size:44px!important}
           .hero-sub{font-size:14px!important}
           .stats-section{padding:28px 22px!important}
           .stats-grid{grid-template-columns:repeat(2,1fr)!important;gap:24px!important}
-          .section-inner{padding:44px 22px!important}
+          .section-inner{padding:48px 22px!important}
           .services-grid{grid-template-columns:1fr 1fr!important;gap:12px!important}
           .countries-grid{grid-template-columns:repeat(3,1fr)!important;gap:10px!important}
           .why-grid{grid-template-columns:1fr!important;gap:32px!important}
           .form-row{grid-template-columns:1fr!important}
           .footer-inner{flex-direction:column!important;gap:18px!important}
           .footer-pad{padding:40px 22px 22px!important}
-          .sec-title{font-size:34px!important;margin-bottom:28px!important}
+          .sec-title{font-size:32px!important;margin-bottom:24px!important}
           .nav-bar{padding:8px 20px!important}
         }
         @media(max-width:480px){
-          .hero-title{font-size:36px!important}
+          .hero-title{font-size:34px!important}
           .services-grid{grid-template-columns:1fr!important}
           .countries-grid{grid-template-columns:1fr!important}
         }
@@ -283,26 +308,26 @@ export default function Home() {
       <div style={s.root}>
 
         {/* ── NAV ── */}
-        <nav className="nav-bar" style={s.nav}>
-          {/* Logo only — no title */}
+        <nav
+          className="nav-bar"
+          style={{
+            ...s.nav,
+            boxShadow: scrolled ? "0 2px 20px rgba(13,43,94,0.10)" : "none",
+            transition: "box-shadow 0.3s",
+          }}
+        >
           <a href="#">
-            <img
-              src="/logo.png"
-              alt="AgapeCazel"
-              style={{ height: 176, width: "auto", display: "block" }}
-            />
+            <img src="/logo.png" alt="AgapeCazel" style={{ height: 176, width: "auto", display: "block" }} />
           </a>
 
-          {/* Desktop links */}
           <div className="desktop-nav" style={s.navLinks}>
             {t.navLinks.map((l, i) => (
               <a key={l} href={`#${t.navAnchors[i]}`} className="nav-link" style={s.navLink}>{l}</a>
             ))}
-            <a href="#contact" className="btn-primary" style={s.navCta}>{t.navCta}</a>
+            <a href="#contact" className="btn-gold" style={s.navCta}>{t.navCta}</a>
             <LangSwitcher lang={lang} setLang={setLang} size={28} />
           </div>
 
-          {/* Mobile right side */}
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             <div className="mobile-lang">
               <LangSwitcher lang={lang} setLang={setLang} size={24} />
@@ -318,24 +343,27 @@ export default function Home() {
         {/* Mobile dropdown */}
         <div className={`mobile-menu${menuOpen ? " open" : ""}`}>
           {t.navLinks.map((l, i) => (
-            <a key={l} href={`#${t.navAnchors[i]}`} className="mobile-link"
-              onClick={() => setMenu(false)}>{l}</a>
+            <a key={l} href={`#${t.navAnchors[i]}`} className="mobile-link" onClick={() => setMenu(false)}>{l}</a>
           ))}
-          <a href="#contact" className="btn-primary"
-            style={{ ...s.btnPrimary, textAlign: "center", marginTop: 12 }}
+          <a href="#contact" className="btn-gold"
+            style={{ ...s.btnGold, textAlign: "center", marginTop: 12 }}
             onClick={() => setMenu(false)}>{t.navCta}</a>
         </div>
 
         {/* ── HERO ── */}
         <section className="hero-section" style={s.hero}>
-          <div style={s.heroGrid} />
-          <div style={s.heroGlow1} />
-          <div style={s.heroGlow2} />
+          {/* Subtle diagonal stripe background */}
+          <div style={s.heroPattern} />
+          {/* Navy accent bar top-left */}
+          <div style={s.heroAccentBar} />
+          {/* Gold glow bottom-right */}
+          <div style={s.heroGlow} />
+
           <div style={{ ...s.heroContent, animation: "fadeUp 0.85s ease both" }}>
-            <p style={s.eyebrow}>{t.eyebrowHero}</p>
+            <p style={s.eyebrow} className="gold-line">{t.eyebrowHero}</p>
             <h1 className="hero-title" style={s.heroTitle}>
               {t.heroTitle1}<br />
-              <span style={{ color: "#C8A96E" }}>{t.heroTitle2}</span>
+              <span style={{ color: "var(--gold)" }}>{t.heroTitle2}</span>
             </h1>
             <p className="hero-sub" style={s.heroSub}>{t.heroSub}</p>
             <div style={s.heroCtas}>
@@ -357,17 +385,19 @@ export default function Home() {
         {/* ── SERVICES ── */}
         <section id="services" className="section-inner" style={s.section}>
           <div style={s.inner}>
-            <p style={s.eyebrow}>{t.eyebrowServices}</p>
+            <p style={s.eyebrow} className="gold-line">{t.eyebrowServices}</p>
             <h2 className="sec-title" style={s.secTitle}>{t.titleServices}</h2>
             <div className="services-grid" style={s.servicesGrid}>
               {t.services.map((sv, i) => (
                 <div key={sv.title} className="service-card"
                   style={{ ...s.serviceCard, ...(activeService === i ? s.serviceCardActive : {}) }}
                   onMouseEnter={() => setActive(i)} onMouseLeave={() => setActive(null)}>
+                  {/* Gold top border accent */}
+                  <div style={{ height: 3, background: activeService === i ? "var(--gold)" : "var(--gold-light)", borderRadius: "2px 2px 0 0", margin: "-24px -20px 20px" }} />
                   <span style={{ fontSize: 28, display: "block", marginBottom: 12 }}>{sv.icon}</span>
                   <h3 style={s.serviceTitle}>{sv.title}</h3>
                   <p style={s.serviceDesc}>{sv.desc}</p>
-                  <span style={{ color: "#C8A96E", fontSize: 18 }}>→</span>
+                  <span style={{ color: "var(--gold)", fontSize: 18 }}>→</span>
                 </div>
               ))}
             </div>
@@ -375,16 +405,16 @@ export default function Home() {
         </section>
 
         {/* ── IMPLANTATIONS ── */}
-        <section id="implantations" className="section-inner" style={{ ...s.section, background: "#0A1628" }}>
+        <section id="implantations" className="section-inner" style={{ ...s.section, background: "var(--navy-light)" }}>
           <div style={s.inner}>
-            <p style={s.eyebrow}>{t.eyebrowCountries}</p>
+            <p style={s.eyebrow} className="gold-line">{t.eyebrowCountries}</p>
             <h2 className="sec-title" style={s.secTitle}>{t.titleCountries}</h2>
             <div className="countries-grid" style={s.countriesGrid}>
               {t.countries.map((c) => (
                 <div key={c.name} className="country-card" style={s.countryCard}>
                   <Flag code={c.code} w={64} h={44} />
-                  <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 17, fontWeight: 600, color: "#F0E6D0" }}>{c.name}</p>
-                  <p style={{ fontSize: 11, color: "#8896B0", letterSpacing: "0.05em" }}>{c.role}</p>
+                  <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 18, fontWeight: 600, color: "var(--navy)" }}>{c.name}</p>
+                  <p style={{ fontSize: 12, color: "var(--text-muted)", letterSpacing: "0.05em" }}>{c.role}</p>
                 </div>
               ))}
             </div>
@@ -395,13 +425,13 @@ export default function Home() {
         <section id="a-propos" className="section-inner" style={s.section}>
           <div className="why-grid" style={{ ...s.inner, display: "grid", gridTemplateColumns: "1fr 300px", gap: 60, alignItems: "center" }}>
             <div>
-              <p style={s.eyebrow}>{t.eyebrowWhy}</p>
+              <p style={s.eyebrow} className="gold-line">{t.eyebrowWhy}</p>
               <h2 className="sec-title" style={{ ...s.secTitle, whiteSpace: "pre-line" }}>{t.titleWhy}</h2>
-              <p style={{ color: "#8896B0", lineHeight: 1.8, marginBottom: 22, fontSize: 15 }}>{t.whyDesc}</p>
+              <p style={{ color: "var(--text-muted)", lineHeight: 1.8, marginBottom: 22, fontSize: 15 }}>{t.whyDesc}</p>
               <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 11, marginBottom: 30 }}>
                 {t.whyList.map((item) => (
-                  <li key={item} style={{ display: "flex", gap: 10, alignItems: "flex-start", color: "#8896B0", fontSize: 14, lineHeight: 1.6 }}>
-                    <span style={{ color: "#C8A96E", fontSize: 7, marginTop: 7, flexShrink: 0 }}>◆</span>{item}
+                  <li key={item} style={{ display: "flex", gap: 10, alignItems: "flex-start", color: "var(--text-muted)", fontSize: 14, lineHeight: 1.6 }}>
+                    <span style={{ color: "var(--gold)", fontSize: 7, marginTop: 7, flexShrink: 0 }}>◆</span>{item}
                   </li>
                 ))}
               </ul>
@@ -410,9 +440,9 @@ export default function Home() {
             <div>
               {t.whyCards.map((card) => (
                 <div key={card.label} style={s.whyCard}>
-                  <p style={{ color: "#C8A96E", fontSize: 11, letterSpacing: "0.12em", marginBottom: 6 }}>{card.label}</p>
-                  <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 44, fontWeight: 700, color: "#F0E6D0", lineHeight: 1 }}>{card.value}</p>
-                  <p style={{ fontSize: 12, color: "#8896B0", marginTop: 4 }}>{card.sub}</p>
+                  <p style={{ color: "var(--gold-dark)", fontSize: 11, letterSpacing: "0.12em", marginBottom: 6 }}>{card.label}</p>
+                  <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 44, fontWeight: 700, color: "var(--navy)", lineHeight: 1 }}>{card.value}</p>
+                  <p style={{ fontSize: 12, color: "var(--text-muted)", marginTop: 4 }}>{card.sub}</p>
                 </div>
               ))}
             </div>
@@ -420,19 +450,22 @@ export default function Home() {
         </section>
 
         {/* ── CONTACT ── */}
-        <section id="contact" className="section-inner" style={{ ...s.section, background: "#0A1628", borderTop: "1px solid rgba(200,169,110,0.1)" }}>
+        <section id="contact" className="section-inner" style={{ ...s.section, background: "var(--navy)" }}>
           <div style={{ ...s.inner, maxWidth: 620 }}>
-            <p style={{ ...s.eyebrow, textAlign: "center" }}>{t.eyebrowContact}</p>
-            <h2 className="sec-title" style={{ ...s.secTitle, textAlign: "center", whiteSpace: "pre-line" }}>{t.titleContact}</h2>
-            <p style={{ color: "#8896B0", textAlign: "center", fontSize: 15, lineHeight: 1.7, marginBottom: 32, marginTop: -14 }}>{t.contactSub}</p>
+            <p style={{ ...s.eyebrow, textAlign: "center", color: "var(--gold)" }} className="gold-line"
+              // override gold-line pseudo for dark bg
+            >{t.eyebrowContact}</p>
+            <style>{`.contact-eyebrow.gold-line::before{background:var(--gold)}`}</style>
+            <h2 className="sec-title" style={{ ...s.secTitle, textAlign: "center", whiteSpace: "pre-line", color: "#fff" }}>{t.titleContact}</h2>
+            <p style={{ color: "rgba(255,255,255,0.6)", textAlign: "center", fontSize: 15, lineHeight: 1.7, marginBottom: 32, marginTop: -14 }}>{t.contactSub}</p>
 
             {formState === "success" ? (
               <div style={s.successBox}>
                 <span style={{ fontSize: 32 }}>✅</span>
-                <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 24, color: "#F0E6D0" }}>{t.successTitle}</p>
-                <p style={{ color: "#8896B0", fontSize: 14 }}>{t.successSub}</p>
+                <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 24, color: "#fff" }}>{t.successTitle}</p>
+                <p style={{ color: "rgba(255,255,255,0.65)", fontSize: 14 }}>{t.successSub}</p>
                 <button onClick={() => setFormState("idle")}
-                  style={{ ...s.btnPrimary, marginTop: 8, border: "none", cursor: "pointer" }}>{t.successBtn}</button>
+                  style={{ ...s.btnGold, marginTop: 8, border: "none", cursor: "pointer" }}>{t.successBtn}</button>
               </div>
             ) : (
               <form onSubmit={handleSubmit} style={s.form}>
@@ -446,9 +479,9 @@ export default function Home() {
                   value={form.societe} onChange={(e) => setForm({ ...form, societe: e.target.value })} />
                 <textarea style={{ ...s.input, resize: "vertical" }} rows={4} placeholder={t.formMessage} required
                   value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} />
-                {formState === "error" && <p style={{ color: "#E24B4A", fontSize: 13 }}>{t.formError}</p>}
-                <button className="submit-btn" type="submit" disabled={formState === "loading"}
-                  style={{ ...s.btnPrimary, border: "none", cursor: "pointer", opacity: formState === "loading" ? 0.6 : 1 }}>
+                {formState === "error" && <p style={{ color: "#F4855A", fontSize: 13 }}>{t.formError}</p>}
+                <button className="submit-btn btn-gold" type="submit" disabled={formState === "loading"}
+                  style={{ ...s.btnGold, border: "none", cursor: "pointer", opacity: formState === "loading" ? 0.6 : 1 }}>
                   {formState === "loading" ? t.formLoading : t.formBtn}
                 </button>
               </form>
@@ -459,13 +492,16 @@ export default function Home() {
         {/* ── FOOTER ── */}
         <footer className="footer-pad" style={s.footer}>
           <div className="footer-inner" style={s.footerInner}>
-           <div>
+            <div>
               <p style={s.navLogo}>AGAPECAZEL</p>
-              <p style={{ color: "#4A5568", fontSize: 12, marginTop: 6 }}>Centre d'appel international · Depuis 2009</p>
+              <p style={{ color: "var(--text-muted)", fontSize: 12, marginTop: 6 }}>Centre d'appel international · Depuis 2009</p>
             </div>
             <div style={{ display: "flex", gap: 18, flexWrap: "wrap" }}>
               {t.footerLinks.map((l) => (
-                <a key={l} href="#" style={{ color: "#4A5568", fontSize: 13 }}>{l}</a>
+                <a key={l} href="#" style={{ color: "var(--text-muted)", fontSize: 13, transition: "color 0.2s" }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "var(--gold)")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
+                >{l}</a>
               ))}
             </div>
             <div style={{ display: "flex", gap: 10 }}>
@@ -473,7 +509,7 @@ export default function Home() {
               <a href="https://www.facebook.com/share/18PgV2ZUAC/" target="_blank" rel="noopener noreferrer" style={s.socialLink}>Facebook</a>
             </div>
           </div>
-          <p style={{ textAlign: "center", color: "#2D3748", fontSize: 11, borderTop: "1px solid rgba(255,255,255,0.04)", paddingTop: 20, maxWidth: 1100, margin: "0 auto" }}>
+          <p style={{ textAlign: "center", color: "var(--text-muted)", fontSize: 11, borderTop: "1px solid var(--border)", paddingTop: 20, maxWidth: 1100, margin: "0 auto" }}>
             {t.footerCopy}
           </p>
         </footer>
@@ -484,52 +520,265 @@ export default function Home() {
 }
 
 // ── Styles ──────────────────────────────────────────────────────────────────
-const s = {
-  root:        { fontFamily: "'DM Sans',sans-serif", background: "#060E23", color: "#F0E6D0", minHeight: "100vh", overflowX: "hidden" },
-  nav:         {
-                 position: "relative",
-                 zIndex: 200,
-                 display: "flex",
-                 alignItems: "center",
-                 justifyContent: "space-between",
-                 padding: "10px 60px",       // réduit pour coller au hero
-                 background: "#060E23",
-                 borderBottom: "1px solid rgba(200,169,110,0.08)",
-               },
-  navLinks:    { display: "flex", alignItems: "center", gap: 26 },
-  navLink:     { color: "#8896B0", fontSize: 13, letterSpacing: "0.04em", transition: "color 0.2s" },
-  navCta:      { background: "#C8A96E", color: "#060E23", padding: "9px 20px", borderRadius: 2, fontSize: 13, fontWeight: 500, letterSpacing: "0.06em" },
-  hero:        { minHeight: "90vh", display: "flex", flexDirection: "column", justifyContent: "center", padding: "60px 60px 60px", position: "relative", overflow: "hidden" },
-  heroGrid:    { position: "absolute", inset: 0, backgroundImage: "linear-gradient(rgba(200,169,110,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(200,169,110,0.04) 1px,transparent 1px)", backgroundSize: "56px 56px", pointerEvents: "none" },
-  heroGlow1:   { position: "absolute", top: -180, right: -180, width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle,rgba(200,169,110,0.08) 0%,transparent 70%)", pointerEvents: "none" },
-  heroGlow2:   { position: "absolute", bottom: -100, left: -100, width: 440, height: 440, borderRadius: "50%", background: "radial-gradient(circle,rgba(26,58,110,0.28) 0%,transparent 70%)", pointerEvents: "none" },
+const s: Record<string, React.CSSProperties> = {
+  root: {
+    fontFamily: "'DM Sans',sans-serif",
+    background: "#FFFFFF",
+    color: "#0D2B5E",
+    minHeight: "100vh",
+    overflowX: "hidden",
+  },
+
+  // ── Nav ──
+  nav: {
+    position: "sticky",
+    top: 0,
+    zIndex: 200,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: "10px 60px",
+    background: "#FFFFFF",
+    borderBottom: "1px solid rgba(13,43,94,0.08)",
+  },
+  navLinks: { display: "flex", alignItems: "center", gap: 26 },
+  navLink:  { color: "#6B7A99", fontSize: 13, letterSpacing: "0.04em", transition: "color 0.2s" },
+  navCta:   {
+    background: "#C8A650",
+    color: "#fff",
+    padding: "9px 20px",
+    borderRadius: 2,
+    fontSize: 13,
+    fontWeight: 500,
+    letterSpacing: "0.06em",
+    transition: "opacity 0.2s",
+  },
+  navLogo:  { fontFamily: "'Cormorant Garamond',serif", fontSize: 17, fontWeight: 700, color: "#0D2B5E", letterSpacing: "0.12em" },
+
+  // ── Hero ──
+  hero: {
+    minHeight: "90vh",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    padding: "60px 60px 60px",
+    position: "relative",
+    overflow: "hidden",
+    background: "#F7F5F0",
+  },
+  heroPattern: {
+    position: "absolute",
+    inset: 0,
+    backgroundImage: "repeating-linear-gradient(45deg, rgba(13,43,94,0.025) 0, rgba(13,43,94,0.025) 1px, transparent 0, transparent 50%)",
+    backgroundSize: "28px 28px",
+    pointerEvents: "none",
+  },
+  heroAccentBar: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: 6,
+    height: "100%",
+    background: "linear-gradient(180deg, #0D2B5E 0%, #C8A650 100%)",
+    pointerEvents: "none",
+  },
+  heroGlow: {
+    position: "absolute",
+    bottom: -80,
+    right: -80,
+    width: 480,
+    height: 480,
+    borderRadius: "50%",
+    background: "radial-gradient(circle, rgba(200,166,80,0.12) 0%, transparent 70%)",
+    pointerEvents: "none",
+  },
   heroContent: { maxWidth: 680, position: "relative" },
-  eyebrow:     { fontSize: 11, letterSpacing: "0.2em", color: "#C8A96E", textTransform: "uppercase", marginBottom: 12 },
-  heroTitle:   { fontFamily: "'Cormorant Garamond',serif", fontSize: 74, fontWeight: 700, lineHeight: 1.05, color: "#F0E6D0", marginBottom: 16 },
-  heroSub:     { fontSize: 16, color: "#8896B0", lineHeight: 1.75, maxWidth: 520, marginBottom: 24, fontWeight: 300 },
-  heroCtas:    { display: "flex", gap: 12, flexWrap: "wrap" },
-  btnPrimary:  { background: "#C8A96E", color: "#060E23", padding: "13px 26px", borderRadius: 2, fontSize: 13, fontWeight: 500, letterSpacing: "0.07em", display: "inline-block", transition: "opacity 0.2s" },
-  btnSecondary:{ border: "1px solid rgba(200,169,110,.28)", color: "#C8A96E", padding: "13px 26px", borderRadius: 2, fontSize: 13, letterSpacing: "0.05em", display: "inline-block" },
-  stats:       { background: "#0A1628", borderTop: "1px solid rgba(200,169,110,0.1)", borderBottom: "1px solid rgba(200,169,110,0.1)", padding: "36px 60px" },
-  statsGrid:   { maxWidth: 1060, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 28 },
-  statCard:    { display: "flex", flexDirection: "column", alignItems: "center", gap: 8 },
-  statNum:     { fontFamily: "'Cormorant Garamond',serif", fontSize: 54, fontWeight: 700, color: "#C8A96E", lineHeight: 1 },
-  statLabel:   { fontSize: 12, color: "#8896B0", letterSpacing: "0.07em", textAlign: "center" },
-  section:     { padding: "60px 60px" },
-  inner:       { maxWidth: 1060, margin: "0 auto" },
-  secTitle:    { fontFamily: "'Cormorant Garamond',serif", fontSize: 46, fontWeight: 700, color: "#F0E6D0", lineHeight: 1.1, marginBottom: 28 },
-  servicesGrid:{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16 },
-  serviceCard: { background: "rgba(255,255,255,0.02)", border: "1px solid rgba(200,169,110,0.1)", borderRadius: 4, padding: "24px 20px", cursor: "pointer", transition: "all 0.25s ease" },
-  serviceCardActive: { background: "rgba(200,169,110,0.07)", borderColor: "rgba(200,169,110,0.4)", transform: "translateY(-4px)" },
-  serviceTitle:{ fontFamily: "'Cormorant Garamond',serif", fontSize: 19, fontWeight: 600, color: "#F0E6D0", marginBottom: 9 },
-  serviceDesc: { fontSize: 13, color: "#8896B0", lineHeight: 1.7, marginBottom: 16 },
-  countriesGrid:{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 16 },
-  countryCard: { background: "rgba(200,169,110,0.04)", border: "1px solid rgba(200,169,110,0.12)", borderRadius: 4, padding: "28px 16px", display: "flex", flexDirection: "column", alignItems: "center", gap: 10, textAlign: "center", transition: "border-color 0.2s" },
-  whyCard:     { background: "rgba(200,169,110,0.04)", border: "1px solid rgba(200,169,110,0.14)", borderRadius: 4, padding: "24px", marginBottom: 14 },
-  form:        { display: "flex", flexDirection: "column", gap: 12 },
-  input:       { background: "rgba(255,255,255,0.04)", border: "1px solid rgba(200,169,110,0.15)", borderRadius: 2, padding: "13px 16px", color: "#F0E6D0", fontSize: 14, width: "100%", transition: "border-color 0.2s" },
-  successBox:  { display: "flex", flexDirection: "column", alignItems: "center", gap: 12, padding: "40px 24px", background: "rgba(200,169,110,0.05)", border: "1px solid rgba(200,169,110,0.2)", borderRadius: 4, textAlign: "center" },
-  footer:      { background: "#030A18", padding: "48px 60px 28px", borderTop: "1px solid rgba(200,169,110,0.07)" },
-  footerInner: { maxWidth: 1060, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 24, marginBottom: 36 },
-  socialLink:  { color: "#C8A96E", fontSize: 12, border: "1px solid rgba(200,169,110,.18)", padding: "5px 14px", borderRadius: 2 },
+  eyebrow: {
+    fontSize: 11,
+    letterSpacing: "0.2em",
+    color: "#9A7C30",
+    textTransform: "uppercase" as const,
+    marginBottom: 12,
+  },
+  heroTitle: {
+    fontFamily: "'Cormorant Garamond',serif",
+    fontSize: 72,
+    fontWeight: 700,
+    lineHeight: 1.05,
+    color: "#0D2B5E",
+    marginBottom: 16,
+  },
+  heroSub: {
+    fontSize: 16,
+    color: "#6B7A99",
+    lineHeight: 1.75,
+    maxWidth: 520,
+    marginBottom: 28,
+    fontWeight: 300,
+  },
+  heroCtas: { display: "flex", gap: 12, flexWrap: "wrap" as const },
+
+  // ── Buttons ──
+  btnPrimary: {
+    background: "#0D2B5E",
+    color: "#FFFFFF",
+    padding: "13px 26px",
+    borderRadius: 2,
+    fontSize: 13,
+    fontWeight: 500,
+    letterSpacing: "0.07em",
+    display: "inline-block",
+    transition: "background 0.2s, color 0.2s",
+  },
+  btnGold: {
+    background: "#C8A650",
+    color: "#FFFFFF",
+    padding: "13px 26px",
+    borderRadius: 2,
+    fontSize: 13,
+    fontWeight: 500,
+    letterSpacing: "0.07em",
+    display: "inline-block",
+    transition: "opacity 0.2s",
+  },
+  btnSecondary: {
+    border: "1.5px solid rgba(13,43,94,0.25)",
+    color: "#0D2B5E",
+    padding: "13px 26px",
+    borderRadius: 2,
+    fontSize: 13,
+    letterSpacing: "0.05em",
+    display: "inline-block",
+    transition: "border-color 0.2s",
+  },
+
+  // ── Stats ──
+  stats: {
+    background: "#0D2B5E",
+    borderTop: "none",
+    borderBottom: "none",
+    padding: "36px 60px",
+  },
+  statsGrid: {
+    maxWidth: 1060,
+    margin: "0 auto",
+    display: "grid",
+    gridTemplateColumns: "repeat(4,1fr)",
+    gap: 28,
+  },
+  statCard:  { display: "flex", flexDirection: "column" as const, alignItems: "center", gap: 8 },
+  statNum:   { fontFamily: "'Cormorant Garamond',serif", fontSize: 54, fontWeight: 700, color: "#C8A650", lineHeight: 1 },
+  statLabel: { fontSize: 12, color: "rgba(255,255,255,0.55)", letterSpacing: "0.07em", textAlign: "center" as const },
+
+  // ── Sections ──
+  section: { padding: "64px 60px", background: "#FFFFFF" },
+  inner:   { maxWidth: 1060, margin: "0 auto" },
+  secTitle: {
+    fontFamily: "'Cormorant Garamond',serif",
+    fontSize: 44,
+    fontWeight: 700,
+    color: "#0D2B5E",
+    lineHeight: 1.1,
+    marginBottom: 32,
+  },
+
+  // ── Services ──
+  servicesGrid: { display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16 },
+  serviceCard: {
+    background: "#FFFFFF",
+    border: "1px solid rgba(13,43,94,0.1)",
+    borderRadius: 4,
+    padding: "24px 20px",
+    cursor: "pointer",
+    transition: "all 0.25s ease",
+    boxShadow: "0 2px 12px rgba(13,43,94,0.05)",
+  },
+  serviceCardActive: {
+    border: "1px solid #C8A650",
+    boxShadow: "0 8px 32px rgba(200,166,80,0.15)",
+    transform: "translateY(-4px)",
+  },
+  serviceTitle: {
+    fontFamily: "'Cormorant Garamond',serif",
+    fontSize: 19,
+    fontWeight: 600,
+    color: "#0D2B5E",
+    marginBottom: 9,
+  },
+  serviceDesc: { fontSize: 13, color: "#6B7A99", lineHeight: 1.7, marginBottom: 16 },
+
+  // ── Countries ──
+  countriesGrid: { display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 16 },
+  countryCard: {
+    background: "#FFFFFF",
+    border: "1px solid rgba(13,43,94,0.1)",
+    borderRadius: 4,
+    padding: "28px 16px",
+    display: "flex",
+    flexDirection: "column" as const,
+    alignItems: "center",
+    gap: 10,
+    textAlign: "center" as const,
+    transition: "border-color 0.2s, box-shadow 0.2s",
+    boxShadow: "0 2px 12px rgba(13,43,94,0.04)",
+  },
+
+  // ── Why cards ──
+  whyCard: {
+    background: "#F7F5F0",
+    border: "1px solid rgba(200,166,80,0.25)",
+    borderLeft: "4px solid #C8A650",
+    borderRadius: 4,
+    padding: "24px",
+    marginBottom: 14,
+  },
+
+  // ── Form ──
+  form:       { display: "flex", flexDirection: "column" as const, gap: 12 },
+  input: {
+    background: "rgba(255,255,255,0.07)",
+    border: "1px solid rgba(255,255,255,0.18)",
+    borderRadius: 2,
+    padding: "13px 16px",
+    color: "#FFFFFF",
+    fontSize: 14,
+    width: "100%",
+    transition: "border-color 0.2s, box-shadow 0.2s",
+  },
+  successBox: {
+    display: "flex",
+    flexDirection: "column" as const,
+    alignItems: "center",
+    gap: 12,
+    padding: "40px 24px",
+    background: "rgba(255,255,255,0.06)",
+    border: "1px solid rgba(200,166,80,0.3)",
+    borderRadius: 4,
+    textAlign: "center" as const,
+  },
+
+  // ── Footer ──
+  footer: {
+    background: "#F7F5F0",
+    padding: "48px 60px 28px",
+    borderTop: "1px solid rgba(13,43,94,0.08)",
+  },
+  footerInner: {
+    maxWidth: 1060,
+    margin: "0 auto",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    flexWrap: "wrap" as const,
+    gap: 24,
+    marginBottom: 36,
+  },
+  socialLink: {
+    color: "#0D2B5E",
+    fontSize: 12,
+    border: "1px solid rgba(13,43,94,0.2)",
+    padding: "5px 14px",
+    borderRadius: 2,
+    transition: "border-color 0.2s, color 0.2s",
+  },
 };
