@@ -29,10 +29,11 @@ const STATS = [
   { value: 24, suffix: "/7",label: "disponibilité" },
 ];
 
-root: {
-  fontFamily: "'DM Sans', 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif",
-  ...
-}
+const styles = {
+  root: {
+    fontFamily: "'DM Sans', 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif"
+  }
+};
 
 const COUNTRIES = [  
   { name: "Île Maurice", flag: "https://flagcdn.com/w40/mu.png", role: "Siège régional" },
