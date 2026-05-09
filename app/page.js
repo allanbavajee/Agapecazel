@@ -25,7 +25,7 @@ function useCounter(target, duration = 2000, started = false) {
 const STATS = [
   { value: 15, suffix: "+", label: "ans d'expérience" },
   { value: 6,  suffix: "",  label: "pays d'implantation" },
-  { value: 500,suffix: "+", label: "collaborateurs" },
+  { value: 300,suffix: "+", label: "collaborateurs" },
   { value: 24, suffix: "/7",label: "disponibilité" },
 ];
 
@@ -145,8 +145,8 @@ console.log("ERROR:", error);
           <div style={{ ...s.heroContent, animation: "fadeUp 0.85s ease both" }}>
             <p style={s.eyebrow}>Centre d'appel international · 15 ans d'excellence</p>
             <h1 style={s.heroTitle}>
-              Votre voix,<br />
-              <span style={{ color: "#C8A96E" }}>notre expertise.</span>
+              Votre Succès,<br />
+              <span style={{ color: "#C8A96E" }}>commence ici.</span>
             </h1>
             <p style={s.heroSub}>
               Nous mettons en relation nos partenaires avec des prospects ciblés et qualifiés selon des critères 
