@@ -30,6 +30,7 @@ const STATS = [
 ];
 
 const COUNTRIES = [
+  { name: "Île Maurice",  flag: "🇲🇺", role: "Siège régional" },
   { name: "France", flag: "🇫🇷", role: "Marché européen" },
   { name: "Belgique", flag: "🇧🇪", role: "Support et expansion" },
 ];
@@ -86,6 +87,10 @@ export default function Home() {
       const { error } = await supabase.from("contacts").insert([
         { nom: form.nom, email: form.email, societe: form.societe, message: form.message },
       ]);
+
+      console.log("DATA:", data);
+      console.log("ERROR:", error);
+      
       if (error) throw error;
       setFormState("success");
       setForm({ nom: "", email: "", societe: "", message: "" });
