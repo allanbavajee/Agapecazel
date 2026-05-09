@@ -459,9 +459,9 @@ export default function Home() {
         {/* ── FOOTER ── */}
         <footer className="footer-pad" style={s.footer}>
           <div className="footer-inner" style={s.footerInner}>
-            <div>
-              <img src="/logo.png" alt="AgapeCazel" style={{ height: 50, width: "auto", display: "block" }} />
-              <p style={{ color: "#4A5568", fontSize: 12, marginTop: 8 }}>{t.footerSub}</p>
+           <div>
+              <p style={s.navLogo}>AGAPECAZEL</p>
+              <p style={{ color: "#4A5568", fontSize: 12, marginTop: 6 }}>Centre d'appel international · Depuis 2009</p>
             </div>
             <div style={{ display: "flex", gap: 18, flexWrap: "wrap" }}>
               {t.footerLinks.map((l) => (
