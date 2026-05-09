@@ -29,16 +29,22 @@ const STATS = [
   { value: 24, suffix: "/7",label: "disponibilité" },
 ];
 
-const styles = {
-  root: {
-    fontFamily: "'DM Sans', 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif"
-  }
-};
-
-const COUNTRIES = [  
-  { name: "Île Maurice", flag: "https://flagcdn.com/w40/mu.png", role: "Siège régional" },
-  { name: "France", flag: "https://flagcdn.com/w40/fr.png", role: "Marché européen" },
-  { name: "Belgique", flag: "https://flagcdn.com/w40/be.png", role: "Support et expansion" },
+const COUNTRIES = [
+  {
+    name: "Île Maurice",
+    flag: "https://flagcdn.com/w80/mu.png",
+    role: "Siège régional",
+  },
+  {
+    name: "France",
+    flag: "https://flagcdn.com/w80/fr.png",
+    role: "Marché européen",
+  },
+  {
+    name: "Belgique",
+    flag: "https://flagcdn.com/w80/be.png",
+    role: "Support et expansion",
+  },
 ];
 
 const SERVICES = [
