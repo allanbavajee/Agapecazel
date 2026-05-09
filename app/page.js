@@ -221,8 +221,8 @@ console.log("ERROR:", error);
               <p style={s.eyebrow}>Pourquoi Agapecazel</p>
               <h2 style={s.secTitle}>Centre d’appel spécialisé<br />en génération de rendez-vous qualifiés</h2>
               <p style={{ color: "#8896B0", lineHeight: 1.8, marginBottom: 28, fontSize: 15 }}>
-                Agape Cazel — Centre d’appel spécialisé en génération de rendez-vous qualifiés
-                Chez Agape Cazel, nous aidons les entreprises à développer leur activité grâce à une prospection 
+                Centre d’appel spécialisé en génération de rendez-vous qualifiés
+                Chez AgapeCazel, nous aidons les entreprises à développer leur activité grâce à une prospection 
                   ciblée et une génération de rendez-vous hautement qualifiés.
                    Basé à l’île Maurice, notre centre d’appel est spécialisé dans :
               </p>
