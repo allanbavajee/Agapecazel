@@ -289,7 +289,7 @@ export default function Home() {
             <img
               src="/logo.png"
               alt="AgapeCazel"
-              style={{ height: 80, width: "auto", display: "block" }}
+              style={{ height: 176, width: "auto", display: "block" }}
             />
           </a>
 
