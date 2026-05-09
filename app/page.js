@@ -269,9 +269,8 @@ export default function Home() {
 
         {/* ── NAV ── */}
         <nav className="nav-bar" style={{ ...s.nav, background: scrolled ? "rgba(6,14,35,0.97)" : "transparent" }}>
-          <a href="#" style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <img src="/logo.png" alt="" style={{ height: 44, width: "auto", display: "block" }} />
-            <span style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 20, fontWeight: 700, letterSpacing: "0.2em", color: "#C8A96E" }}>AGAPECAZEL</span>
+          <a href="www.agapeczel.com">
+            <img src="/logo.png" alt="AgapeCazel" style={{ height: 176, width: "auto", display: "block" }} />
           </a>
 
           {/* Desktop links */}
