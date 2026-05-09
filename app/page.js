@@ -149,8 +149,8 @@ console.log("ERROR:", error);
               <span style={{ color: "#C8A96E" }}>notre expertise.</span>
             </h1>
             <p style={s.heroSub}>
-              Agapecazel connecte les entreprises du monde entier à des équipes expertes
-              implantées au cœur de l'Afrique et de l'océan Indien.
+              Nous mettons en relation nos partenaires avec des prospects ciblés et qualifiés selon des critères 
+              précis afin d’optimiser leur taux de transformation.
             </p>
             <div style={s.heroCtas}>
               <a href="#contact" className="btn-primary" style={s.btnPrimary}>Demander un devis</a>
