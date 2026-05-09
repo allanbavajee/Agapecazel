@@ -24,8 +24,8 @@ const T = {
       { icon: "🛠️", title: "Support client",      desc: "Assistance technique et SAV multicanal pour fidéliser vos clients." },
       { icon: "📋", title: "Back-office",         desc: "Traitement des données, saisie, gestion administrative et suivi dossiers." },
     ],
-    eyebrowCountries: "Notre présence mondiale",
-    titleCountries: "3 pays, une seule mission",
+    eyebrowCountries: "Nos partenaires",
+    titleCountries: "Ils nous font confiance",
     countries: [
       { name: "Île Maurice", code: "mu", role: "Siège régional" },
       { name: "France",      code: "fr", role: "Marché européen" },
@@ -78,8 +78,8 @@ const T = {
       { icon: "🛠️", title: "Customer support", desc: "Technical assistance and multichannel after-sales service to retain your clients." },
       { icon: "📋", title: "Back-office",      desc: "Data processing, entry, administrative management and file tracking." },
     ],
-    eyebrowCountries: "Our global presence",
-    titleCountries: "3 countries, one mission",
+    eyebrowCountries: "Our partners",
+    titleCountries: "They trust us",
     countries: [
       { name: "Mauritius", code: "mu", role: "Regional headquarters" },
       { name: "France",    code: "fr", role: "European market" },
@@ -222,6 +222,8 @@ export default function Home() {
         .lang-btn{background:transparent;border:2px solid transparent;border-radius:4px;cursor:pointer;padding:3px 3px 1px;transition:border-color 0.2s,transform 0.15s;display:inline-flex;align-items:center;line-height:1}
         .lang-btn:hover{transform:scale(1.1)}
         .lang-btn.active{border-color:#C8A96E}
+        /* mobile-lang hidden on desktop, shown on mobile */
+        .mobile-lang{display:none}
         /* Hamburger — hidden on desktop */
         .hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px}
         .hamburger span{display:block;width:22px;height:2px;background:#C8A96E;border-radius:2px;transition:transform 0.25s,opacity 0.25s}
@@ -233,13 +235,14 @@ export default function Home() {
         @media(max-width:768px){
           .hamburger{display:flex!important}
           .desktop-nav{display:none!important}
+          .mobile-lang{display:block!important}
           .mobile-menu.open{display:flex!important}
           .hero-section{padding:100px 22px 60px!important}
           .hero-title{font-size:46px!important}
           .hero-sub{font-size:14px!important}
           .stats-section{padding:44px 22px!important}
           .stats-grid{grid-template-columns:repeat(2,1fr)!important;gap:24px!important}
-          .section-inner{padding:64px 22px!important}
+          .section-inner{padding:44px 22px!important}
           .services-grid{grid-template-columns:1fr 1fr!important;gap:12px!important}
           .countries-grid{grid-template-columns:repeat(3,1fr)!important;gap:10px!important}
           .why-grid{grid-template-columns:1fr!important;gap:32px!important}
@@ -272,9 +275,11 @@ export default function Home() {
             <LangSwitcher lang={lang} setLang={setLang} size={28} />
           </div>
 
-          {/* Mobile right side */}
+          {/* Mobile right side — lang switcher hidden on desktop, hamburger hidden on desktop */}
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <LangSwitcher lang={lang} setLang={setLang} size={24} />
+            <div className="mobile-lang">
+              <LangSwitcher lang={lang} setLang={setLang} size={24} />
+            </div>
             <button className="hamburger" onClick={() => setMenu(!menuOpen)} aria-label="Menu">
               <span style={{ transform: menuOpen ? "rotate(45deg) translate(5px,5px)" : "none" }} />
               <span style={{ opacity: menuOpen ? 0 : 1 }} />
@@ -310,14 +315,6 @@ export default function Home() {
               <a href="#contact" className="btn-primary" style={s.btnPrimary}>{t.heroCta1}</a>
               <a href="#services" style={s.btnSecondary}>{t.heroCta2}</a>
             </div>
-          </div>
-          <div style={s.pills}>
-            {t.countries.map((c, i) => (
-              <div key={c.name} style={{ ...s.pill, animation: `pillIn 0.5s ease ${i * 0.12}s both` }}>
-                <Flag code={c.code} w={22} h={15} />
-                <span style={{ fontSize: 13, color: "#C8A96E" }}>{c.name}</span>
-              </div>
-            ))}
           </div>
         </section>
 
@@ -489,7 +486,7 @@ const s = {
   navLinks:    { display: "flex", alignItems: "center", gap: 26 },
   navLink:     { color: "#8896B0", fontSize: 13, letterSpacing: "0.04em", transition: "color 0.2s" },
   navCta:      { background: "#C8A96E", color: "#060E23", padding: "9px 20px", borderRadius: 2, fontSize: 13, fontWeight: 500, letterSpacing: "0.06em" },
-  hero:        { minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center", padding: "120px 60px 80px", position: "relative", overflow: "hidden" },
+  hero:        { minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center", padding: "100px 60px 60px", position: "relative", overflow: "hidden" },
   heroGrid:    { position: "absolute", inset: 0, backgroundImage: "linear-gradient(rgba(200,169,110,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(200,169,110,0.04) 1px,transparent 1px)", backgroundSize: "56px 56px", pointerEvents: "none" },
   heroGlow1:   { position: "absolute", top: -180, right: -180, width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle,rgba(200,169,110,0.08) 0%,transparent 70%)", pointerEvents: "none" },
   heroGlow2:   { position: "absolute", bottom: -100, left: -100, width: 440, height: 440, borderRadius: "50%", background: "radial-gradient(circle,rgba(26,58,110,0.28) 0%,transparent 70%)", pointerEvents: "none" },
@@ -502,14 +499,14 @@ const s = {
   btnSecondary:{ border: "1px solid rgba(200,169,110,.28)", color: "#C8A96E", padding: "13px 26px", borderRadius: 2, fontSize: 13, letterSpacing: "0.05em", display: "inline-block" },
   pills:       { display: "flex", gap: 8, flexWrap: "wrap", marginTop: 44, position: "relative" },
   pill:        { display: "flex", alignItems: "center", gap: 8, background: "rgba(200,169,110,0.06)", border: "1px solid rgba(200,169,110,0.14)", padding: "7px 14px", borderRadius: 40 },
-  stats:       { background: "#0A1628", borderTop: "1px solid rgba(200,169,110,0.1)", borderBottom: "1px solid rgba(200,169,110,0.1)", padding: "52px 60px" },
+  stats:       { background: "#0A1628", borderTop: "1px solid rgba(200,169,110,0.1)", borderBottom: "1px solid rgba(200,169,110,0.1)", padding: "36px 60px" },
   statsGrid:   { maxWidth: 1060, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 28 },
   statCard:    { display: "flex", flexDirection: "column", alignItems: "center", gap: 8 },
   statNum:     { fontFamily: "'Cormorant Garamond',serif", fontSize: 54, fontWeight: 700, color: "#C8A96E", lineHeight: 1 },
   statLabel:   { fontSize: 12, color: "#8896B0", letterSpacing: "0.07em", textAlign: "center" },
-  section:     { padding: "84px 60px" },
+  section:     { padding: "60px 60px" },
   inner:       { maxWidth: 1060, margin: "0 auto" },
-  secTitle:    { fontFamily: "'Cormorant Garamond',serif", fontSize: 46, fontWeight: 700, color: "#F0E6D0", lineHeight: 1.1, marginBottom: 40 },
+  secTitle:    { fontFamily: "'Cormorant Garamond',serif", fontSize: 46, fontWeight: 700, color: "#F0E6D0", lineHeight: 1.1, marginBottom: 28 },
   servicesGrid:{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16 },
   serviceCard: { background: "rgba(255,255,255,0.02)", border: "1px solid rgba(200,169,110,0.1)", borderRadius: 4, padding: "24px 20px", cursor: "pointer", transition: "all 0.25s ease" },
   serviceCardActive: { background: "rgba(200,169,110,0.07)", borderColor: "rgba(200,169,110,0.4)", transform: "translateY(-4px)" },
