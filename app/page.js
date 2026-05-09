@@ -242,10 +242,10 @@ export default function Home() {
           .desktop-nav{display:none!important}
           .mobile-lang{display:block!important}
           .mobile-menu.open{display:flex!important}
-          .hero-section{padding:100px 22px 60px!important}
+          .hero-section{padding:72px 22px 32px!important;min-height:auto!important}
           .hero-title{font-size:46px!important}
           .hero-sub{font-size:14px!important}
-          .stats-section{padding:44px 22px!important}
+          .stats-section{padding:28px 22px!important}
           .stats-grid{grid-template-columns:repeat(2,1fr)!important;gap:24px!important}
           .section-inner{padding:44px 22px!important}
           .services-grid{grid-template-columns:1fr 1fr!important;gap:12px!important}
@@ -496,9 +496,9 @@ const s = {
   heroGlow1:   { position: "absolute", top: -180, right: -180, width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle,rgba(200,169,110,0.08) 0%,transparent 70%)", pointerEvents: "none" },
   heroGlow2:   { position: "absolute", bottom: -100, left: -100, width: 440, height: 440, borderRadius: "50%", background: "radial-gradient(circle,rgba(26,58,110,0.28) 0%,transparent 70%)", pointerEvents: "none" },
   heroContent: { maxWidth: 680, position: "relative" },
-  eyebrow:     { fontSize: 11, letterSpacing: "0.2em", color: "#C8A96E", textTransform: "uppercase", marginBottom: 18 },
-  heroTitle:   { fontFamily: "'Cormorant Garamond',serif", fontSize: 74, fontWeight: 700, lineHeight: 1.05, color: "#F0E6D0", marginBottom: 24 },
-  heroSub:     { fontSize: 16, color: "#8896B0", lineHeight: 1.75, maxWidth: 520, marginBottom: 36, fontWeight: 300 },
+  eyebrow:     { fontSize: 11, letterSpacing: "0.2em", color: "#C8A96E", textTransform: "uppercase", marginBottom: 12 },
+  heroTitle:   { fontFamily: "'Cormorant Garamond',serif", fontSize: 74, fontWeight: 700, lineHeight: 1.05, color: "#F0E6D0", marginBottom: 16 },
+  heroSub:     { fontSize: 16, color: "#8896B0", lineHeight: 1.75, maxWidth: 520, marginBottom: 24, fontWeight: 300 },
   heroCtas:    { display: "flex", gap: 12, flexWrap: "wrap" },
   btnPrimary:  { background: "#C8A96E", color: "#060E23", padding: "13px 26px", borderRadius: 2, fontSize: 13, fontWeight: 500, letterSpacing: "0.07em", display: "inline-block", transition: "opacity 0.2s" },
   btnSecondary:{ border: "1px solid rgba(200,169,110,.28)", color: "#C8A96E", padding: "13px 26px", borderRadius: 2, fontSize: 13, letterSpacing: "0.05em", display: "inline-block" },
