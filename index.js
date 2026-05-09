@@ -30,11 +30,8 @@ const STATS = [
 
 // ── Countries ──────────────────────────────────────────────────────────────
 const COUNTRIES = [
-  { name: "Île Maurice",  flag: "🇲🇺", role: "Siège régional" },
-  { name: "Tunisie",      flag: "🇹🇳", role: "Hub Maghreb" },
-  { name: "Madagascar",   flag: "🇲🇬", role: "Centre opérationnel" },
-  { name: "Cameroun",     flag: "🇨🇲", role: "Hub Afrique centrale" },
-  { name: "Nigeria",      flag: "🇳🇬", role: "Hub Afrique de l'ouest" },
+  { name: "France", flag: "🇫🇷", role: "Marché européen" },
+  { name: "Belgique", flag: "🇧🇪", role: "Support et expansion" },
 ];
 
 // ── Services ───────────────────────────────────────────────────────────────
