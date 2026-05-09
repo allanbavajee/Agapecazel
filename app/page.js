@@ -29,11 +29,26 @@ const STATS = [
   { value: 24,  suffix: "/7", label: "disponibilité" },
 ];
 
+// code = ISO 3166-1 alpha-2 lowercase
 const COUNTRIES = [
-  { name: "Île Maurice", flag: "🇲🇺", role: "Siège régional" },
-  { name: "France",      flag: "🇫🇷", role: "Marché européen" },
-  { name: "Belgique",    flag: "🇧🇪", role: "Support et expansion" },
+  { name: "Île Maurice", code: "mu", role: "Siège régional" },
+  { name: "France",      code: "fr", role: "Marché européen" },
+  { name: "Belgique",    code: "be", role: "Support et expansion" },
 ];
+
+// ── Flag image component ───────────────────────────────────────────────────
+function Flag({ code, size = 38 }) {
+  return (
+    <img
+      src={`https://flagcdn.com/w80/${code}.png`}
+      srcSet={`https://flagcdn.com/w160/${code}.png 2x`}
+      width={size * 1.4}
+      height={size}
+      alt={code.toUpperCase()}
+      style={{ objectFit: "cover", borderRadius: 3, display: "block" }}
+    />
+  );
+}
 
 const SERVICES = [
   { icon: "📞", title: "Réception d'appels",  desc: "Accueil téléphonique professionnel, gestion des demandes et orientation client 24h/24." },
@@ -122,12 +137,6 @@ export default function Home() {
         .submit-btn:hover   { opacity: 0.88 !important; }
         input:focus, textarea:focus { border-color: rgba(200,169,110,0.5) !important; outline: none; }
         /* Flag emoji rendering — ensures crisp display across all OS */
-        .flag-emoji {
-          font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", "Android Emoji", sans-serif;
-          font-style: normal;
-          line-height: 1;
-          display: inline-block;
-        }
       `}</style>
 
       <div style={s.root}>
@@ -173,7 +182,7 @@ export default function Home() {
           <div style={s.pills}>
             {COUNTRIES.map((c, i) => (
               <div key={c.name} style={{ ...s.pill, animation: `pillIn 0.5s ease ${i * 0.12}s both` }}>
-                <span className="flag-emoji" style={{ fontSize: 20 }}>{c.flag}</span>
+                <Flag code={c.code} size={16} />
                 <span style={{ fontSize: 13, color: "#C8A96E" }}>{c.name}</span>
               </div>
             ))}
@@ -221,12 +230,7 @@ export default function Home() {
             <div style={s.countriesGrid}>
               {COUNTRIES.map((c) => (
                 <div key={c.name} className="country-card" style={s.countryCard}>
-                  <span
-                    className="flag-emoji"
-                    style={{ fontSize: 48, lineHeight: 1.2, display: "block" }}
-                  >
-                    {c.flag}
-                  </span>
+                  <Flag code={c.code} size={40} />
                   <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 17, fontWeight: 600, color: "#F0E6D0" }}>
                     {c.name}
                   </p>
