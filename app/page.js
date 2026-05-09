@@ -219,17 +219,18 @@ console.log("ERROR:", error);
           <div style={{ ...s.inner, display: "grid", gridTemplateColumns: "1fr 340px", gap: 72, alignItems: "center" }}>
             <div>
               <p style={s.eyebrow}>Pourquoi Agapecazel</p>
-              <h2 style={s.secTitle}>L'expertise africaine<br />au service de vos clients</h2>
+              <h2 style={s.secTitle}>Centre d’appel spécialisé<br />en génération de rendez-vous qualifiés</h2>
               <p style={{ color: "#8896B0", lineHeight: 1.8, marginBottom: 28, fontSize: 15 }}>
-                Depuis plus de 15 ans, nous accompagnons des entreprises en France, en Europe et à
-                l'international avec des équipes multilingues, formées aux standards les plus exigeants
-                de la relation client.
+                Agape Cazel — Centre d’appel spécialisé en génération de rendez-vous qualifiés
+                Chez Agape Cazel, nous aidons les entreprises à développer leur activité grâce à une prospection 
+                  ciblée et une génération de rendez-vous hautement qualifiés.
+                   Basé à l’île Maurice, notre centre d’appel est spécialisé dans :
               </p>
               <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 14, marginBottom: 36 }}>
-                {["Équipes francophones, anglophones et arabophones",
-                  "Tarifs compétitifs, qualité premium",
-                  "Technologie de pointe & reporting en temps réel",
-                  "Flexibilité : scale-up rapide selon vos besoins"].map((item) => (
+                {["Équipes francophones et anglophones",
+                  "La prise de rendez-vous en énergies renouvelables",
+                  "La vente et la prospection commerciale",
+                  "La prise de rendez-vous pour audit patrimonial"].map((item) => (
                   <li key={item} style={{ display: "flex", gap: 12, alignItems: "flex-start", color: "#8896B0", fontSize: 14, lineHeight: 1.6 }}>
                     <span style={{ color: "#C8A96E", fontSize: 7, marginTop: 7, flexShrink: 0 }}>◆</span>
                     {item}
@@ -307,11 +308,11 @@ console.log("ERROR:", error);
               ))}
             </div>
             <div style={{ display: "flex", gap: 10 }}>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"
+              <a href="https://www.linkedin.com/in/agapecazel-call-center-a103773bb?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" rel="noopener noreferrer"
                 style={{ color: "#C8A96E", fontSize: 12, border: "1px solid rgba(200,169,110,.18)", padding: "5px 14px", borderRadius: 2 }}>
                 LinkedIn
               </a>
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"
+              <a href="https://www.facebook.com/share/18PgV2ZUAC/" target="_blank" rel="noopener noreferrer"
                 style={{ color: "#C8A96E", fontSize: 12, border: "1px solid rgba(200,169,110,.18)", padding: "5px 14px", borderRadius: 2 }}>
                 Facebook
               </a>
