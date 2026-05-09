@@ -29,10 +29,15 @@ const STATS = [
   { value: 24, suffix: "/7",label: "disponibilité" },
 ];
 
-const COUNTRIES = [
-  { name: "Île Maurice",  flag: "🇲🇺", role: "Siège régional" },
-  { name: "France", flag: "🇫🇷", role: "Marché européen" },
-  { name: "Belgique", flag: "🇧🇪", role: "Support et expansion" },
+root: {
+  fontFamily: "'DM Sans', 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif",
+  ...
+}
+
+const COUNTRIES = [  
+  { name: "Île Maurice", flag: "https://flagcdn.com/w40/mu.png", role: "Siège régional" },
+  { name: "France", flag: "https://flagcdn.com/w40/fr.png", role: "Marché européen" },
+  { name: "Belgique", flag: "https://flagcdn.com/w40/be.png", role: "Support et expansion" },
 ];
 
 const SERVICES = [
@@ -201,7 +206,7 @@ console.log("ERROR:", error);
         <section id="implantations" style={{ ...s.section, background: "#0A1628" }}>
           <div style={s.inner}>
             <p style={s.eyebrow}>Notre présence mondiale</p>
-            <h2 style={s.secTitle}>6 pays, une seule mission</h2>
+            <h2 style={s.secTitle}>3 pays, une seule mission</h2>
             <div style={s.countriesGrid}>
               {COUNTRIES.map((c) => (
                 <div key={c.name} className="country-card" style={s.countryCard}>
