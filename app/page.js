@@ -240,7 +240,7 @@ console.log("ERROR:", error);
             </div>
             <div>
               {[{ label: "SATISFACTION CLIENT", value: "98%", sub: "taux de satisfaction moyen" },
-                { label: "LANGUES COUVERTES",   value: "8+",  sub: "français, anglais, arabe, malgache…" }]
+                { label: "LANGUES COUVERTES",   value: "2",  sub: "Français, Anglais" }]
                 .map((card) => (
                 <div key={card.label} style={s.whyCard}>
                   <p style={{ color: "#C8A96E", fontSize: 11, letterSpacing: "0.12em", marginBottom: 6 }}>{card.label}</p>
