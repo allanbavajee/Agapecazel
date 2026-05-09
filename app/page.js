@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { supabase } from "../lib/supabase";
 
 // ── Translations ────────────────────────────────────────────────────────────
 const T = {
@@ -190,11 +189,17 @@ export default function Home() {
     e.preventDefault();
     setFormState("loading");
     try {
-      const { data, error } = await supabase
-        .from("contacts")
-        .insert([{ nom: form.nom, email: form.email, societe: form.societe, message: form.message }]);
-      console.log("DATA:", data, "ERROR:", error);
-      if (error) throw error;
+      const res = await fetch("https://formspree.io/f/xwvyrjod", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          nom:     form.nom,
+          email:   form.email,
+          societe: form.societe,
+          message: form.message,
+        }),
+      });
+      if (!res.ok) throw new Error("Formspree error");
       setFormState("success");
       setForm({ nom: "", email: "", societe: "", message: "" });
     } catch (err) {
