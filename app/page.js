@@ -269,7 +269,7 @@ export default function Home() {
 
         {/* ── NAV ── */}
         <nav className="nav-bar" style={{ ...s.nav, background: scrolled ? "rgba(6,14,35,0.97)" : "transparent" }}>
-          <a href="www.agapeczel.com">
+          <a href="">
             <img src="/logo.png" alt="AgapeCazel" style={{ height: 176, width: "auto", display: "block" }} />
           </a>
 
