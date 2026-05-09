@@ -233,7 +233,7 @@ export default function Home() {
         .hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px}
         .hamburger span{display:block;width:22px;height:2px;background:#C8A96E;border-radius:2px;transition:transform 0.25s,opacity 0.25s}
         /* Mobile menu — hidden by default */
-        .mobile-menu{display:none;position:fixed;top:62px;left:0;right:0;z-index:190;background:rgba(6,14,35,0.98);backdrop-filter:blur(14px);flex-direction:column;padding:18px 22px 26px;gap:2px;border-bottom:1px solid rgba(200,169,110,0.1);animation:slideDown 0.2s ease}
+        .mobile-menu{display:none;position:relative;top:62px;left:0;right:0;z-index:190;background:rgba(6,14,35,0.98);backdrop-filter:blur(14px);flex-direction:column;padding:18px 22px 26px;gap:2px;border-bottom:1px solid rgba(200,169,110,0.1);animation:slideDown 0.2s ease}
         .mobile-link{color:#8896B0;font-size:15px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
 
         /* ── RESPONSIVE ── */
@@ -488,7 +488,7 @@ function LangSwitcher({ lang, setLang, size = 28 }) {
 // ── Styles ──────────────────────────────────────────────────────────────────
 const s = {
   root:        { fontFamily: "'DM Sans',sans-serif", background: "#060E23", color: "#F0E6D0", minHeight: "100vh", overflowX: "hidden" },
-  nav:         { position: "fixed", top: 0, left: 0, right: 0, zIndex: 200, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "18px 60px", transition: "background 0.3s ease", backdropFilter: "blur(10px)" },
+  nav:         { position: "relative", top: 0, left: 0, right: 0, zIndex: 200, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "18px 60px", transition: "background 0.3s ease", backdropFilter: "blur(10px)" },
   navLogo:     { fontFamily: "'Cormorant Garamond',serif", fontSize: 20, fontWeight: 700, letterSpacing: "0.2em", color: "#C8A96E" },
   navLinks:    { display: "flex", alignItems: "center", gap: 26 },
   navLink:     { color: "#8896B0", fontSize: 13, letterSpacing: "0.04em", transition: "color 0.2s" },
