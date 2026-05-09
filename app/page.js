@@ -8,7 +8,7 @@ const T = {
     navLinks:   ["Services", "Implantations", "À propos", "Carrières"],
     navAnchors: ["services", "implantations", "a-propos", "carrieres"],
     navCta: "Devis gratuit",
-    eyebrowHero: "Centre d'appel international · 15 ans d'excellence",
+    eyebrowHero: "Centre d'appel · 15 ans d'excellence",
     heroTitle1: "Votre Succès,",
     heroTitle2: "commence ici.",
     heroSub: "Nous mettons en relation nos partenaires avec des prospects ciblés et qualifiés selon des critères précis afin d'optimiser leur taux de transformation.",
@@ -161,15 +161,37 @@ function StatCard({ value, suffix, label, started }) {
   );
 }
 
+// ── Language switcher ───────────────────────────────────────────────────────
+function LangSwitcher({ lang, setLang, size = 28 }) {
+  return (
+    <div style={{ display: "flex", gap: 5, alignItems: "center" }}>
+      <button
+        className={`lang-btn${lang === "fr" ? " active" : ""}`}
+        onClick={() => setLang("fr")}
+        title="Français"
+      >
+        <Flag code="fr" w={size} h={Math.round(size * 0.67)} />
+      </button>
+      <button
+        className={`lang-btn${lang === "en" ? " active" : ""}`}
+        onClick={() => setLang("en")}
+        title="English"
+      >
+        <Flag code="gb" w={size} h={Math.round(size * 0.67)} />
+      </button>
+    </div>
+  );
+}
+
 // ── Page ────────────────────────────────────────────────────────────────────
 export default function Home() {
-  const [lang, setLang]               = useState("fr");
-  const [scrolled, setScrolled]       = useState(false);
-  const [statsStarted, setStats]      = useState(false);
-  const [activeService, setActive]    = useState(null);
-  const [menuOpen, setMenu]           = useState(false);
-  const [form, setForm]               = useState({ nom: "", email: "", societe: "", message: "" });
-  const [formState, setFormState]     = useState("idle");
+  const [lang, setLang]            = useState("fr");
+  const [scrolled, setScrolled]    = useState(false);
+  const [statsStarted, setStats]   = useState(false);
+  const [activeService, setActive] = useState(null);
+  const [menuOpen, setMenu]        = useState(false);
+  const [form, setForm]            = useState({ nom: "", email: "", societe: "", message: "" });
+  const [formState, setFormState]  = useState("idle");
   const statsRef = useRef(null);
   const t = T[lang];
 
@@ -213,7 +235,6 @@ export default function Home() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap');
         @keyframes fadeUp    { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
-        @keyframes pillIn    { from{opacity:0;transform:translateX(-10px)} to{opacity:1;transform:translateX(0)} }
         @keyframes slideDown { from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:translateY(0)} }
         *{box-sizing:border-box;margin:0;padding:0}
         a{text-decoration:none}
@@ -223,26 +244,21 @@ export default function Home() {
         .btn-primary:hover{opacity:0.86!important}
         .submit-btn:hover{opacity:0.88!important}
         input:focus,textarea:focus{border-color:rgba(200,169,110,0.5)!important;outline:none}
-        /* Lang button */
         .lang-btn{background:transparent;border:2px solid transparent;border-radius:4px;cursor:pointer;padding:3px 3px 1px;transition:border-color 0.2s,transform 0.15s;display:inline-flex;align-items:center;line-height:1}
         .lang-btn:hover{transform:scale(1.1)}
         .lang-btn.active{border-color:#C8A96E}
-        /* mobile-lang hidden on desktop, shown on mobile */
         .mobile-lang{display:none}
-        /* Hamburger — hidden on desktop */
         .hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px}
         .hamburger span{display:block;width:22px;height:2px;background:#C8A96E;border-radius:2px;transition:transform 0.25s,opacity 0.25s}
-        /* Mobile menu — hidden by default */
-        .mobile-menu{display:none;position:relative;top:62px;left:0;right:0;z-index:190;background:rgba(6,14,35,0.98);backdrop-filter:blur(14px);flex-direction:column;padding:18px 22px 26px;gap:2px;border-bottom:1px solid rgba(200,169,110,0.1);animation:slideDown 0.2s ease}
+        .mobile-menu{display:none;position:relative;left:0;right:0;z-index:190;background:rgba(6,14,35,0.98);backdrop-filter:blur(14px);flex-direction:column;padding:18px 22px 26px;gap:2px;border-bottom:1px solid rgba(200,169,110,0.1);animation:slideDown 0.2s ease}
         .mobile-link{color:#8896B0;font-size:15px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
 
-        /* ── RESPONSIVE ── */
         @media(max-width:768px){
           .hamburger{display:flex!important}
           .desktop-nav{display:none!important}
           .mobile-lang{display:block!important}
           .mobile-menu.open{display:flex!important}
-          .hero-section{padding:72px 22px 32px!important;min-height:auto!important}
+          .hero-section{padding:40px 22px 32px!important;min-height:auto!important}
           .hero-title{font-size:46px!important}
           .hero-sub{font-size:14px!important}
           .stats-section{padding:28px 22px!important}
@@ -255,22 +271,26 @@ export default function Home() {
           .footer-inner{flex-direction:column!important;gap:18px!important}
           .footer-pad{padding:40px 22px 22px!important}
           .sec-title{font-size:34px!important;margin-bottom:28px!important}
-          .nav-bar{padding:14px 20px!important}
+          .nav-bar{padding:8px 20px!important}
         }
         @media(max-width:480px){
           .hero-title{font-size:36px!important}
           .services-grid{grid-template-columns:1fr!important}
           .countries-grid{grid-template-columns:1fr!important}
-          .stat-num-span{font-size:44px!important}
         }
       `}</style>
 
       <div style={s.root}>
 
         {/* ── NAV ── */}
-        <nav className="nav-bar" style={{ ...s.nav, background: scrolled ? "rgba(6,14,35,0.97)" : "transparent" }}>
-          <a href="">
-            <img src="/logo.png" alt="AgapeCazel" style={{ height: 176, width: "auto", display: "block" }} />
+        <nav className="nav-bar" style={s.nav}>
+          {/* Logo only — no title */}
+          <a href="#">
+            <img
+              src="/logo.png"
+              alt="AgapeCazel"
+              style={{ height: 80, width: "auto", display: "block" }}
+            />
           </a>
 
           {/* Desktop links */}
@@ -282,7 +302,7 @@ export default function Home() {
             <LangSwitcher lang={lang} setLang={setLang} size={28} />
           </div>
 
-          {/* Mobile right side — lang switcher hidden on desktop, hamburger hidden on desktop */}
+          {/* Mobile right side */}
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             <div className="mobile-lang">
               <LangSwitcher lang={lang} setLang={setLang} size={24} />
@@ -440,8 +460,8 @@ export default function Home() {
         <footer className="footer-pad" style={s.footer}>
           <div className="footer-inner" style={s.footerInner}>
             <div>
-              <p style={s.navLogo}>AGAPECAZEL</p>
-              <p style={{ color: "#4A5568", fontSize: 12, marginTop: 6 }}>{t.footerSub}</p>
+              <img src="/logo.png" alt="AgapeCazel" style={{ height: 50, width: "auto", display: "block" }} />
+              <p style={{ color: "#4A5568", fontSize: 12, marginTop: 8 }}>{t.footerSub}</p>
             </div>
             <div style={{ display: "flex", gap: 18, flexWrap: "wrap" }}>
               {t.footerLinks.map((l) => (
@@ -463,37 +483,23 @@ export default function Home() {
   );
 }
 
-// ── Language switcher component ─────────────────────────────────────────────
-function LangSwitcher({ lang, setLang, size = 28 }) {
-  return (
-    <div style={{ display: "flex", gap: 5, alignItems: "center" }}>
-      <button
-        className={`lang-btn${lang === "fr" ? " active" : ""}`}
-        onClick={() => setLang("fr")}
-        title="Français"
-      >
-        <Flag code="fr" w={size} h={Math.round(size * 0.67)} />
-      </button>
-      <button
-        className={`lang-btn${lang === "en" ? " active" : ""}`}
-        onClick={() => setLang("en")}
-        title="English"
-      >
-        <Flag code="gb" w={size} h={Math.round(size * 0.67)} />
-      </button>
-    </div>
-  );
-}
-
 // ── Styles ──────────────────────────────────────────────────────────────────
 const s = {
   root:        { fontFamily: "'DM Sans',sans-serif", background: "#060E23", color: "#F0E6D0", minHeight: "100vh", overflowX: "hidden" },
-  nav:         { position: "relative", top: 0, left: 0, right: 0, zIndex: 200, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "18px 60px", transition: "background 0.3s ease", backdropFilter: "blur(10px)" },
-  navLogo:     { fontFamily: "'Cormorant Garamond',serif", fontSize: 20, fontWeight: 700, letterSpacing: "0.2em", color: "#C8A96E" },
+  nav:         {
+                 position: "relative",
+                 zIndex: 200,
+                 display: "flex",
+                 alignItems: "center",
+                 justifyContent: "space-between",
+                 padding: "10px 60px",       // réduit pour coller au hero
+                 background: "#060E23",
+                 borderBottom: "1px solid rgba(200,169,110,0.08)",
+               },
   navLinks:    { display: "flex", alignItems: "center", gap: 26 },
   navLink:     { color: "#8896B0", fontSize: 13, letterSpacing: "0.04em", transition: "color 0.2s" },
   navCta:      { background: "#C8A96E", color: "#060E23", padding: "9px 20px", borderRadius: 2, fontSize: 13, fontWeight: 500, letterSpacing: "0.06em" },
-  hero:        { minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center", padding: "100px 60px 60px", position: "relative", overflow: "hidden" },
+  hero:        { minHeight: "90vh", display: "flex", flexDirection: "column", justifyContent: "center", padding: "60px 60px 60px", position: "relative", overflow: "hidden" },
   heroGrid:    { position: "absolute", inset: 0, backgroundImage: "linear-gradient(rgba(200,169,110,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(200,169,110,0.04) 1px,transparent 1px)", backgroundSize: "56px 56px", pointerEvents: "none" },
   heroGlow1:   { position: "absolute", top: -180, right: -180, width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle,rgba(200,169,110,0.08) 0%,transparent 70%)", pointerEvents: "none" },
   heroGlow2:   { position: "absolute", bottom: -100, left: -100, width: 440, height: 440, borderRadius: "50%", background: "radial-gradient(circle,rgba(26,58,110,0.28) 0%,transparent 70%)", pointerEvents: "none" },
@@ -504,8 +510,6 @@ const s = {
   heroCtas:    { display: "flex", gap: 12, flexWrap: "wrap" },
   btnPrimary:  { background: "#C8A96E", color: "#060E23", padding: "13px 26px", borderRadius: 2, fontSize: 13, fontWeight: 500, letterSpacing: "0.07em", display: "inline-block", transition: "opacity 0.2s" },
   btnSecondary:{ border: "1px solid rgba(200,169,110,.28)", color: "#C8A96E", padding: "13px 26px", borderRadius: 2, fontSize: 13, letterSpacing: "0.05em", display: "inline-block" },
-  pills:       { display: "flex", gap: 8, flexWrap: "wrap", marginTop: 44, position: "relative" },
-  pill:        { display: "flex", alignItems: "center", gap: 8, background: "rgba(200,169,110,0.06)", border: "1px solid rgba(200,169,110,0.14)", padding: "7px 14px", borderRadius: 40 },
   stats:       { background: "#0A1628", borderTop: "1px solid rgba(200,169,110,0.1)", borderBottom: "1px solid rgba(200,169,110,0.1)", padding: "36px 60px" },
   statsGrid:   { maxWidth: 1060, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 28 },
   statCard:    { display: "flex", flexDirection: "column", alignItems: "center", gap: 8 },
