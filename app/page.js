@@ -597,7 +597,7 @@ const s = {
     fontSize: 11,
     letterSpacing: "0.2em",
     color: "#9A7C30",
-    textTransform: "uppercase" as const,
+    textTransform: "uppercase",
     marginBottom: 12,
   },
   heroTitle: {
@@ -616,7 +616,7 @@ const s = {
     marginBottom: 28,
     fontWeight: 300,
   },
-  heroCtas: { display: "flex", gap: 12, flexWrap: "wrap" as const },
+  heroCtas: { display: "flex", gap: 12, flexWrap: "wrap" },
 
   // ── Buttons ──
   btnPrimary: {
@@ -666,9 +666,9 @@ const s = {
     gridTemplateColumns: "repeat(4,1fr)",
     gap: 28,
   },
-  statCard:  { display: "flex", flexDirection: "column" as const, alignItems: "center", gap: 8 },
+  statCard:  { display: "flex", flexDirection: "column", alignItems: "center", gap: 8 },
   statNum:   { fontFamily: "'Cormorant Garamond',serif", fontSize: 54, fontWeight: 700, color: "#C8A650", lineHeight: 1 },
-  statLabel: { fontSize: 12, color: "rgba(255,255,255,0.55)", letterSpacing: "0.07em", textAlign: "center" as const },
+  statLabel: { fontSize: 12, color: "rgba(255,255,255,0.55)", letterSpacing: "0.07em", textAlign: "center" },
 
   // ── Sections ──
   section: { padding: "64px 60px", background: "#FFFFFF" },
@@ -715,10 +715,10 @@ const s = {
     borderRadius: 4,
     padding: "28px 16px",
     display: "flex",
-    flexDirection: "column" as const,
+    flexDirection: "column",
     alignItems: "center",
     gap: 10,
-    textAlign: "center" as const,
+    textAlign: "center",
     transition: "border-color 0.2s, box-shadow 0.2s",
     boxShadow: "0 2px 12px rgba(13,43,94,0.04)",
   },
@@ -734,7 +734,7 @@ const s = {
   },
 
   // ── Form ──
-  form:       { display: "flex", flexDirection: "column" as const, gap: 12 },
+  form:       { display: "flex", flexDirection: "column", gap: 12 },
   input: {
     background: "rgba(255,255,255,0.07)",
     border: "1px solid rgba(255,255,255,0.18)",
@@ -747,14 +747,14 @@ const s = {
   },
   successBox: {
     display: "flex",
-    flexDirection: "column" as const,
+    flexDirection: "column",
     alignItems: "center",
     gap: 12,
     padding: "40px 24px",
     background: "rgba(255,255,255,0.06)",
     border: "1px solid rgba(200,166,80,0.3)",
     borderRadius: 4,
-    textAlign: "center" as const,
+    textAlign: "center",
   },
 
   // ── Footer ──
@@ -769,7 +769,7 @@ const s = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "flex-start",
-    flexWrap: "wrap" as const,
+    flexWrap: "wrap",
     gap: 24,
     marginBottom: 36,
   },
