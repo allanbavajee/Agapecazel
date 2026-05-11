@@ -130,12 +130,12 @@ const STATS_VALUES = [
 // Mid gray: #6B7A99
 // Light gold: #F0E4B8
 
-function useCounter(target: number, duration = 1800, started = false) {
+function useCounter(target, duration = 1800, started = false) {
   const [value, setValue] = useState(0);
   useEffect(() => {
     if (!started) return;
-    let t0: number | null = null;
-    const step = (ts: number) => {
+    let t0 = null;
+    const step = (ts) => {
       if (!t0) t0 = ts;
       const p = Math.min((ts - t0) / duration, 1);
       setValue(Math.floor((1 - Math.pow(1 - p, 3)) * target));
@@ -146,7 +146,7 @@ function useCounter(target: number, duration = 1800, started = false) {
   return value;
 }
 
-function Flag({ code, w = 32, h = 22 }: { code: string; w?: number; h?: number }) {
+function Flag({ code, w = 32, h = 22 }) {
   return (
     <img
       src={`https://flagcdn.com/w80/${code}.png`}
@@ -157,7 +157,7 @@ function Flag({ code, w = 32, h = 22 }: { code: string; w?: number; h?: number }
   );
 }
 
-function StatCard({ value, suffix, label, started }: { value: number; suffix: string; label: string; started: boolean }) {
+function StatCard({ value, suffix, label, started }) {
   const count = useCounter(value, 1800, started);
   return (
     <div style={s.statCard}>
@@ -167,7 +167,7 @@ function StatCard({ value, suffix, label, started }: { value: number; suffix: st
   );
 }
 
-function LangSwitcher({ lang, setLang, size = 28 }: { lang: string; setLang: (l: string) => void; size?: number }) {
+function LangSwitcher({ lang, setLang, size = 28 }) {
   return (
     <div style={{ display: "flex", gap: 5, alignItems: "center" }}>
       <button
@@ -189,14 +189,14 @@ function LangSwitcher({ lang, setLang, size = 28 }: { lang: string; setLang: (l:
 }
 
 export default function Home() {
-  const [lang, setLang]            = useState<"fr" | "en">("fr");
+  const [lang, setLang]            = useState("fr");
   const [scrolled, setScrolled]    = useState(false);
   const [statsStarted, setStats]   = useState(false);
-  const [activeService, setActive] = useState<number | null>(null);
+  const [activeService, setActive] = useState(null);
   const [menuOpen, setMenu]        = useState(false);
   const [form, setForm]            = useState({ nom: "", email: "", societe: "", message: "" });
-  const [formState, setFormState]  = useState<"idle" | "loading" | "success" | "error">("idle");
-  const statsRef = useRef<HTMLElement>(null);
+  const [formState, setFormState]  = useState("idle");
+  const statsRef = useRef(null);
   const t = T[lang];
 
   useEffect(() => {
@@ -211,7 +211,7 @@ export default function Home() {
     return () => obs.disconnect();
   }, []);
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e) {
     e.preventDefault();
     setFormState("loading");
     try {
@@ -520,7 +520,7 @@ export default function Home() {
 }
 
 // ── Styles ──────────────────────────────────────────────────────────────────
-const s: Record<string, React.CSSProperties> = {
+const s = {
   root: {
     fontFamily: "'DM Sans',sans-serif",
     background: "#FFFFFF",
