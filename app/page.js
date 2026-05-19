@@ -121,21 +121,12 @@ const STATS_VALUES = [
   { value: 24,  suffix: "/7"},
 ];
 
-// ── Color palette (logo-inspired: gold + navy + white) ───────────────────────
-// Gold:  #C8A650  (primary accent)
-// Navy:  #0D2B5E  (primary dark)
-// Light navy: #1A3F80
-// White: #FFFFFF  (background)
-// Off-white: #F7F5F0
-// Mid gray: #6B7A99
-// Light gold: #F0E4B8
-
-function useCounter(target, duration = 1800, started = false) {
+function useCounter(target: number, duration = 1800, started = false) {
   const [value, setValue] = useState(0);
   useEffect(() => {
     if (!started) return;
-    let t0 = null;
-    const step = (ts) => {
+    let t0: number | null = null;
+    const step = (ts: number) => {
       if (!t0) t0 = ts;
       const p = Math.min((ts - t0) / duration, 1);
       setValue(Math.floor((1 - Math.pow(1 - p, 3)) * target));
@@ -146,7 +137,7 @@ function useCounter(target, duration = 1800, started = false) {
   return value;
 }
 
-function Flag({ code, w = 32, h = 22 }) {
+function Flag({ code, w = 32, h = 22 }: { code: string; w?: number; h?: number }) {
   return (
     <img
       src={`https://flagcdn.com/w80/${code}.png`}
@@ -157,7 +148,7 @@ function Flag({ code, w = 32, h = 22 }) {
   );
 }
 
-function StatCard({ value, suffix, label, started }) {
+function StatCard({ value, suffix, label, started }: { value: number; suffix: string; label: string; started: boolean }) {
   const count = useCounter(value, 1800, started);
   return (
     <div style={s.statCard}>
@@ -167,7 +158,7 @@ function StatCard({ value, suffix, label, started }) {
   );
 }
 
-function LangSwitcher({ lang, setLang, size = 28 }) {
+function LangSwitcher({ lang, setLang, size = 28 }: { lang: string; setLang: (l: string) => void; size?: number }) {
   return (
     <div style={{ display: "flex", gap: 5, alignItems: "center" }}>
       <button
@@ -192,12 +183,12 @@ export default function Home() {
   const [lang, setLang]            = useState("fr");
   const [scrolled, setScrolled]    = useState(false);
   const [statsStarted, setStats]   = useState(false);
-  const [activeService, setActive] = useState(null);
+  const [activeService, setActive] = useState<number | null>(null);
   const [menuOpen, setMenu]        = useState(false);
   const [form, setForm]            = useState({ nom: "", email: "", societe: "", message: "" });
   const [formState, setFormState]  = useState("idle");
-  const statsRef = useRef(null);
-  const t = T[lang];
+  const statsRef = useRef<HTMLElement>(null);
+  const t = T[lang as keyof typeof T];
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 60);
@@ -211,7 +202,7 @@ export default function Home() {
     return () => obs.disconnect();
   }, []);
 
-  async function handleSubmit(e) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setFormState("loading");
     try {
@@ -237,7 +228,6 @@ export default function Home() {
         *{box-sizing:border-box;margin:0;padding:0}
         a{text-decoration:none}
 
-        /* ── Color tokens ── */
         :root {
           --gold:       #C8A650;
           --gold-light: #F0E4B8;
@@ -275,15 +265,24 @@ export default function Home() {
         .mobile-menu{display:none;position:relative;left:0;right:0;z-index:190;background:#fff;flex-direction:column;padding:18px 22px 26px;gap:2px;border-bottom:1px solid var(--border);box-shadow:0 8px 24px rgba(13,43,94,0.1);animation:slideDown 0.2s ease}
         .mobile-link{color:var(--text-muted);font-size:15px;padding:12px 0;border-bottom:1px solid var(--border)}
 
-        /* Decorative gold line accent */
         .gold-line::before{content:'';display:block;width:40px;height:3px;background:var(--gold);margin-bottom:12px;border-radius:2px}
+
+        /* Hero image hover zoom */
+        .hero-img{transition:transform 0.6s ease}
+        .hero-img:hover{transform:scale(1.03)}
+
+        /* Why photos hover */
+        .why-photo{transition:transform 0.4s ease,box-shadow 0.4s ease}
+        .why-photo:hover{transform:scale(1.02);box-shadow:0 12px 40px rgba(13,43,94,0.2)!important}
 
         @media(max-width:768px){
           .hamburger{display:flex!important}
           .desktop-nav{display:none!important}
           .mobile-lang{display:block!important}
           .mobile-menu.open{display:flex!important}
-          .hero-section{padding:48px 22px 40px!important;min-height:auto!important}
+          .hero-section{flex-direction:column!important;min-height:auto!important}
+          .hero-text-col{padding:48px 22px 40px!important}
+          .hero-img-col{min-height:280px!important;flex:none!important;width:100%!important}
           .hero-title{font-size:44px!important}
           .hero-sub{font-size:14px!important}
           .stats-section{padding:28px 22px!important}
@@ -292,6 +291,8 @@ export default function Home() {
           .services-grid{grid-template-columns:1fr 1fr!important;gap:12px!important}
           .countries-grid{grid-template-columns:repeat(3,1fr)!important;gap:10px!important}
           .why-grid{grid-template-columns:1fr!important;gap:32px!important}
+          .why-photos-col{flex-direction:row!important}
+          .why-photos-col > div{flex:1!important}
           .form-row{grid-template-columns:1fr!important}
           .footer-inner{flex-direction:column!important;gap:18px!important}
           .footer-pad{padding:40px 22px 22px!important}
@@ -302,6 +303,7 @@ export default function Home() {
           .hero-title{font-size:34px!important}
           .services-grid{grid-template-columns:1fr!important}
           .countries-grid{grid-template-columns:1fr!important}
+          .why-photos-col{flex-direction:column!important}
         }
       `}</style>
 
@@ -350,25 +352,98 @@ export default function Home() {
             onClick={() => setMenu(false)}>{t.navCta}</a>
         </div>
 
-        {/* ── HERO ── */}
-        <section className="hero-section" style={s.hero}>
-          {/* Subtle diagonal stripe background */}
-          <div style={s.heroPattern} />
-          {/* Navy accent bar top-left */}
-          <div style={s.heroAccentBar} />
-          {/* Gold glow bottom-right */}
-          <div style={s.heroGlow} />
+        {/* ── HERO ── split-screen avec agapeazel4.png ── */}
+        <section
+          className="hero-section"
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            minHeight: "90vh",
+            position: "relative",
+            overflow: "hidden",
+          }}
+        >
+          {/* Colonne texte */}
+          <div
+            className="hero-text-col"
+            style={{
+              flex: "1 1 55%",
+              padding: "60px 60px 60px 60px",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              position: "relative",
+              background: "#F7F5F0",
+              overflow: "hidden",
+            }}
+          >
+            {/* Diagonal stripe background */}
+            <div style={s.heroPattern} />
+            {/* Navy accent bar */}
+            <div style={s.heroAccentBar} />
+            {/* Gold glow */}
+            <div style={s.heroGlow} />
 
-          <div style={{ ...s.heroContent, animation: "fadeUp 0.85s ease both" }}>
-            <p style={s.eyebrow} className="gold-line">{t.eyebrowHero}</p>
-            <h1 className="hero-title" style={s.heroTitle}>
-              {t.heroTitle1}<br />
-              <span style={{ color: "var(--gold)" }}>{t.heroTitle2}</span>
-            </h1>
-            <p className="hero-sub" style={s.heroSub}>{t.heroSub}</p>
-            <div style={s.heroCtas}>
-              <a href="#contact" className="btn-primary" style={s.btnPrimary}>{t.heroCta1}</a>
-              <a href="#services" style={s.btnSecondary}>{t.heroCta2}</a>
+            <div style={{ ...s.heroContent, animation: "fadeUp 0.85s ease both", position: "relative" }}>
+              <p style={s.eyebrow} className="gold-line">{t.eyebrowHero}</p>
+              <h1 className="hero-title" style={s.heroTitle}>
+                {t.heroTitle1}<br />
+                <span style={{ color: "var(--gold)" }}>{t.heroTitle2}</span>
+              </h1>
+              <p className="hero-sub" style={s.heroSub}>{t.heroSub}</p>
+              <div style={s.heroCtas}>
+                <a href="#contact" className="btn-primary" style={s.btnPrimary}>{t.heroCta1}</a>
+                <a href="#services" style={s.btnSecondary}>{t.heroCta2}</a>
+              </div>
+            </div>
+          </div>
+
+          {/* Colonne image — agapeazel4.png */}
+          <div
+            className="hero-img-col"
+            style={{
+              flex: "1 1 45%",
+              position: "relative",
+              minHeight: 480,
+              overflow: "hidden",
+            }}
+          >
+            <img
+              src="/agapeazel4.png"
+              alt="Agent centre d'appel AgapeCazel"
+              className="hero-img"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                objectPosition: "center top",
+                display: "block",
+              }}
+            />
+            {/* Overlay dégradé côté gauche pour fondre avec la colonne texte */}
+            <div style={{
+              position: "absolute",
+              inset: 0,
+              background: "linear-gradient(to right, rgba(247,245,240,0.45) 0%, transparent 35%)",
+              pointerEvents: "none",
+            }} />
+            {/* Badge flottant navy/gold */}
+            <div style={{
+              position: "absolute",
+              bottom: 32,
+              left: 24,
+              background: "rgba(13,43,94,0.92)",
+              borderLeft: "4px solid #C8A650",
+              padding: "14px 20px",
+              borderRadius: 3,
+              backdropFilter: "blur(6px)",
+            }}>
+              <p style={{ color: "#C8A650", fontSize: 11, letterSpacing: "0.12em", marginBottom: 4 }}>
+                CENTRE D'APPEL
+              </p>
+              <p style={{ color: "#fff", fontSize: 15, fontFamily: "'Cormorant Garamond',serif", fontWeight: 600 }}>
+                Île Maurice · Depuis 2009
+              </p>
             </div>
           </div>
         </section>
@@ -392,7 +467,6 @@ export default function Home() {
                 <div key={sv.title} className="service-card"
                   style={{ ...s.serviceCard, ...(activeService === i ? s.serviceCardActive : {}) }}
                   onMouseEnter={() => setActive(i)} onMouseLeave={() => setActive(null)}>
-                  {/* Gold top border accent */}
                   <div style={{ height: 3, background: activeService === i ? "var(--gold)" : "var(--gold-light)", borderRadius: "2px 2px 0 0", margin: "-24px -20px 20px" }} />
                   <span style={{ fontSize: 28, display: "block", marginBottom: 12 }}>{sv.icon}</span>
                   <h3 style={s.serviceTitle}>{sv.title}</h3>
@@ -421,9 +495,19 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── WHY US ── */}
+        {/* ── WHY US ── avec agapeazel5.png + agapeazel6.png ── */}
         <section id="a-propos" className="section-inner" style={s.section}>
-          <div className="why-grid" style={{ ...s.inner, display: "grid", gridTemplateColumns: "1fr 300px", gap: 60, alignItems: "center" }}>
+          <div
+            className="why-grid"
+            style={{
+              ...s.inner,
+              display: "grid",
+              gridTemplateColumns: "1fr 320px",
+              gap: 60,
+              alignItems: "center",
+            }}
+          >
+            {/* Colonne texte */}
             <div>
               <p style={s.eyebrow} className="gold-line">{t.eyebrowWhy}</p>
               <h2 className="sec-title" style={{ ...s.secTitle, whiteSpace: "pre-line" }}>{t.titleWhy}</h2>
@@ -437,7 +521,97 @@ export default function Home() {
               </ul>
               <a href="#contact" className="btn-primary" style={s.btnPrimary}>{t.whyCta}</a>
             </div>
-            <div>
+
+            {/* Colonne droite : photos + stat cards */}
+            <div
+              className="why-photos-col"
+              style={{ display: "flex", flexDirection: "column", gap: 14 }}
+            >
+              {/* Photo 1 — agapeazel5.png */}
+              <div
+                className="why-photo"
+                style={{
+                  position: "relative",
+                  borderRadius: 4,
+                  overflow: "hidden",
+                  boxShadow: "0 6px 28px rgba(13,43,94,0.13)",
+                }}
+              >
+                <img
+                  src="/agapeazel5.png"
+                  alt="Équipe AgapeCazel"
+                  style={{
+                    width: "100%",
+                    height: 190,
+                    objectFit: "cover",
+                    objectPosition: "center top",
+                    display: "block",
+                  }}
+                />
+                {/* Overlay subtil bas */}
+                <div style={{
+                  position: "absolute",
+                  inset: 0,
+                  background: "linear-gradient(to top, rgba(13,43,94,0.3) 0%, transparent 55%)",
+                  pointerEvents: "none",
+                }} />
+                {/* Label */}
+                <p style={{
+                  position: "absolute",
+                  bottom: 10,
+                  left: 12,
+                  color: "#fff",
+                  fontSize: 11,
+                  letterSpacing: "0.1em",
+                  fontFamily: "'DM Sans',sans-serif",
+                  fontWeight: 500,
+                }}>
+                  NOTRE ÉQUIPE
+                </p>
+              </div>
+
+              {/* Photo 2 — agapeazel6.png */}
+              <div
+                className="why-photo"
+                style={{
+                  position: "relative",
+                  borderRadius: 4,
+                  overflow: "hidden",
+                  boxShadow: "0 6px 28px rgba(13,43,94,0.13)",
+                }}
+              >
+                <img
+                  src="/agapeazel6.png"
+                  alt="Conseiller AgapeCazel"
+                  style={{
+                    width: "100%",
+                    height: 190,
+                    objectFit: "cover",
+                    objectPosition: "center top",
+                    display: "block",
+                  }}
+                />
+                <div style={{
+                  position: "absolute",
+                  inset: 0,
+                  background: "linear-gradient(to top, rgba(13,43,94,0.3) 0%, transparent 55%)",
+                  pointerEvents: "none",
+                }} />
+                <p style={{
+                  position: "absolute",
+                  bottom: 10,
+                  left: 12,
+                  color: "#fff",
+                  fontSize: 11,
+                  letterSpacing: "0.1em",
+                  fontFamily: "'DM Sans',sans-serif",
+                  fontWeight: 500,
+                }}>
+                  NOS CONSEILLERS
+                </p>
+              </div>
+
+              {/* Stat cards */}
               {t.whyCards.map((card) => (
                 <div key={card.label} style={s.whyCard}>
                   <p style={{ color: "var(--gold-dark)", fontSize: 11, letterSpacing: "0.12em", marginBottom: 6 }}>{card.label}</p>
@@ -452,10 +626,7 @@ export default function Home() {
         {/* ── CONTACT ── */}
         <section id="contact" className="section-inner" style={{ ...s.section, background: "var(--navy)" }}>
           <div style={{ ...s.inner, maxWidth: 620 }}>
-            <p style={{ ...s.eyebrow, textAlign: "center", color: "var(--gold)" }} className="gold-line"
-              // override gold-line pseudo for dark bg
-            >{t.eyebrowContact}</p>
-            <style>{`.contact-eyebrow.gold-line::before{background:var(--gold)}`}</style>
+            <p style={{ ...s.eyebrow, textAlign: "center", color: "var(--gold)" }}>{t.eyebrowContact}</p>
             <h2 className="sec-title" style={{ ...s.secTitle, textAlign: "center", whiteSpace: "pre-line", color: "#fff" }}>{t.titleContact}</h2>
             <p style={{ color: "rgba(255,255,255,0.6)", textAlign: "center", fontSize: 15, lineHeight: 1.7, marginBottom: 32, marginTop: -14 }}>{t.contactSub}</p>
 
@@ -499,8 +670,8 @@ export default function Home() {
             <div style={{ display: "flex", gap: 18, flexWrap: "wrap" }}>
               {t.footerLinks.map((l) => (
                 <a key={l} href="#" style={{ color: "var(--text-muted)", fontSize: 13, transition: "color 0.2s" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = "var(--gold)")}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
+                  onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = "var(--gold)")}
+                  onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = "var(--text-muted)")}
                 >{l}</a>
               ))}
             </div>
@@ -520,7 +691,7 @@ export default function Home() {
 }
 
 // ── Styles ──────────────────────────────────────────────────────────────────
-const s = {
+const s: Record<string, React.CSSProperties> = {
   root: {
     fontFamily: "'DM Sans',sans-serif",
     background: "#FFFFFF",
@@ -556,16 +727,6 @@ const s = {
   navLogo:  { fontFamily: "'Cormorant Garamond',serif", fontSize: 17, fontWeight: 700, color: "#0D2B5E", letterSpacing: "0.12em" },
 
   // ── Hero ──
-  hero: {
-    minHeight: "90vh",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    padding: "60px 60px 60px",
-    position: "relative",
-    overflow: "hidden",
-    background: "#F7F5F0",
-  },
   heroPattern: {
     position: "absolute",
     inset: 0,
@@ -592,7 +753,7 @@ const s = {
     background: "radial-gradient(circle, rgba(200,166,80,0.12) 0%, transparent 70%)",
     pointerEvents: "none",
   },
-  heroContent: { maxWidth: 680, position: "relative" },
+  heroContent: { maxWidth: 680 },
   eyebrow: {
     fontSize: 11,
     letterSpacing: "0.2em",
@@ -655,8 +816,6 @@ const s = {
   // ── Stats ──
   stats: {
     background: "#0D2B5E",
-    borderTop: "none",
-    borderBottom: "none",
     padding: "36px 60px",
   },
   statsGrid: {
@@ -730,11 +889,11 @@ const s = {
     borderLeft: "4px solid #C8A650",
     borderRadius: 4,
     padding: "24px",
-    marginBottom: 14,
+    marginBottom: 0,
   },
 
   // ── Form ──
-  form:       { display: "flex", flexDirection: "column", gap: 12 },
+  form:  { display: "flex", flexDirection: "column", gap: 12 },
   input: {
     background: "rgba(255,255,255,0.07)",
     border: "1px solid rgba(255,255,255,0.18)",
