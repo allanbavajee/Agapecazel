@@ -121,12 +121,12 @@ const STATS_VALUES = [
   { value: 24,  suffix: "/7"},
 ];
 
-function useCounter(target: number, duration = 1800, started = false) {
+function useCounter(target, duration = 1800, started = false) {
   const [value, setValue] = useState(0);
   useEffect(() => {
     if (!started) return;
-    let t0: number | null = null;
-    const step = (ts: number) => {
+    let t0 = null;
+    const step = (ts) => {
       if (!t0) t0 = ts;
       const p = Math.min((ts - t0) / duration, 1);
       setValue(Math.floor((1 - Math.pow(1 - p, 3)) * target));
@@ -137,7 +137,7 @@ function useCounter(target: number, duration = 1800, started = false) {
   return value;
 }
 
-function Flag({ code, w = 32, h = 22 }: { code: string; w?: number; h?: number }) {
+function Flag({ code, w = 32, h = 22 }) {
   return (
     <img
       src={`https://flagcdn.com/w80/${code}.png`}
@@ -148,7 +148,7 @@ function Flag({ code, w = 32, h = 22 }: { code: string; w?: number; h?: number }
   );
 }
 
-function StatCard({ value, suffix, label, started }: { value: number; suffix: string; label: string; started: boolean }) {
+function StatCard({ value, suffix, label, started }) {
   const count = useCounter(value, 1800, started);
   return (
     <div style={s.statCard}>
@@ -158,7 +158,7 @@ function StatCard({ value, suffix, label, started }: { value: number; suffix: st
   );
 }
 
-function LangSwitcher({ lang, setLang, size = 28 }: { lang: string; setLang: (l: string) => void; size?: number }) {
+function LangSwitcher({ lang, setLang, size = 28 }) {
   return (
     <div style={{ display: "flex", gap: 5, alignItems: "center" }}>
       <button
@@ -183,12 +183,12 @@ export default function Home() {
   const [lang, setLang]            = useState("fr");
   const [scrolled, setScrolled]    = useState(false);
   const [statsStarted, setStats]   = useState(false);
-  const [activeService, setActive] = useState<number | null>(null);
+  const [activeService, setActive] = useState(null);
   const [menuOpen, setMenu]        = useState(false);
   const [form, setForm]            = useState({ nom: "", email: "", societe: "", message: "" });
   const [formState, setFormState]  = useState("idle");
-  const statsRef = useRef<HTMLElement>(null);
-  const t = T[lang as keyof typeof T];
+  const statsRef = useRef(null);
+  const t = T[lang];
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 60);
@@ -202,7 +202,7 @@ export default function Home() {
     return () => obs.disconnect();
   }, []);
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e) {
     e.preventDefault();
     setFormState("loading");
     try {
@@ -267,11 +267,9 @@ export default function Home() {
 
         .gold-line::before{content:'';display:block;width:40px;height:3px;background:var(--gold);margin-bottom:12px;border-radius:2px}
 
-        /* Hero image hover zoom */
         .hero-img{transition:transform 0.6s ease}
         .hero-img:hover{transform:scale(1.03)}
 
-        /* Why photos hover */
         .why-photo{transition:transform 0.4s ease,box-shadow 0.4s ease}
         .why-photo:hover{transform:scale(1.02);box-shadow:0 12px 40px rgba(13,43,94,0.2)!important}
 
@@ -352,7 +350,7 @@ export default function Home() {
             onClick={() => setMenu(false)}>{t.navCta}</a>
         </div>
 
-        {/* ── HERO ── split-screen avec agapeazel4.png ── */}
+        {/* ── HERO — split-screen avec agapeazel4.png ── */}
         <section
           className="hero-section"
           style={{
@@ -377,11 +375,8 @@ export default function Home() {
               overflow: "hidden",
             }}
           >
-            {/* Diagonal stripe background */}
             <div style={s.heroPattern} />
-            {/* Navy accent bar */}
             <div style={s.heroAccentBar} />
-            {/* Gold glow */}
             <div style={s.heroGlow} />
 
             <div style={{ ...s.heroContent, animation: "fadeUp 0.85s ease both", position: "relative" }}>
@@ -420,14 +415,13 @@ export default function Home() {
                 display: "block",
               }}
             />
-            {/* Overlay dégradé côté gauche pour fondre avec la colonne texte */}
             <div style={{
               position: "absolute",
               inset: 0,
               background: "linear-gradient(to right, rgba(247,245,240,0.45) 0%, transparent 35%)",
               pointerEvents: "none",
             }} />
-            {/* Badge flottant navy/gold */}
+            {/* Badge flottant */}
             <div style={{
               position: "absolute",
               bottom: 32,
@@ -495,7 +489,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── WHY US ── avec agapeazel5.png + agapeazel6.png ── */}
+        {/* ── WHY US — avec agapeazel5.png + agapeazel6.png ── */}
         <section id="a-propos" className="section-inner" style={s.section}>
           <div
             className="why-grid"
@@ -548,14 +542,12 @@ export default function Home() {
                     display: "block",
                   }}
                 />
-                {/* Overlay subtil bas */}
                 <div style={{
                   position: "absolute",
                   inset: 0,
                   background: "linear-gradient(to top, rgba(13,43,94,0.3) 0%, transparent 55%)",
                   pointerEvents: "none",
                 }} />
-                {/* Label */}
                 <p style={{
                   position: "absolute",
                   bottom: 10,
@@ -563,7 +555,6 @@ export default function Home() {
                   color: "#fff",
                   fontSize: 11,
                   letterSpacing: "0.1em",
-                  fontFamily: "'DM Sans',sans-serif",
                   fontWeight: 500,
                 }}>
                   NOTRE ÉQUIPE
@@ -604,7 +595,6 @@ export default function Home() {
                   color: "#fff",
                   fontSize: 11,
                   letterSpacing: "0.1em",
-                  fontFamily: "'DM Sans',sans-serif",
                   fontWeight: 500,
                 }}>
                   NOS CONSEILLERS
@@ -670,8 +660,8 @@ export default function Home() {
             <div style={{ display: "flex", gap: 18, flexWrap: "wrap" }}>
               {t.footerLinks.map((l) => (
                 <a key={l} href="#" style={{ color: "var(--text-muted)", fontSize: 13, transition: "color 0.2s" }}
-                  onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = "var(--gold)")}
-                  onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = "var(--text-muted)")}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "var(--gold)")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
                 >{l}</a>
               ))}
             </div>
@@ -691,7 +681,7 @@ export default function Home() {
 }
 
 // ── Styles ──────────────────────────────────────────────────────────────────
-const s: Record<string, React.CSSProperties> = {
+const s = {
   root: {
     fontFamily: "'DM Sans',sans-serif",
     background: "#FFFFFF",
@@ -699,8 +689,6 @@ const s: Record<string, React.CSSProperties> = {
     minHeight: "100vh",
     overflowX: "hidden",
   },
-
-  // ── Nav ──
   nav: {
     position: "sticky",
     top: 0,
@@ -724,9 +712,7 @@ const s: Record<string, React.CSSProperties> = {
     letterSpacing: "0.06em",
     transition: "opacity 0.2s",
   },
-  navLogo:  { fontFamily: "'Cormorant Garamond',serif", fontSize: 17, fontWeight: 700, color: "#0D2B5E", letterSpacing: "0.12em" },
-
-  // ── Hero ──
+  navLogo: { fontFamily: "'Cormorant Garamond',serif", fontSize: 17, fontWeight: 700, color: "#0D2B5E", letterSpacing: "0.12em" },
   heroPattern: {
     position: "absolute",
     inset: 0,
@@ -778,8 +764,6 @@ const s: Record<string, React.CSSProperties> = {
     fontWeight: 300,
   },
   heroCtas: { display: "flex", gap: 12, flexWrap: "wrap" },
-
-  // ── Buttons ──
   btnPrimary: {
     background: "#0D2B5E",
     color: "#FFFFFF",
@@ -812,8 +796,6 @@ const s: Record<string, React.CSSProperties> = {
     display: "inline-block",
     transition: "border-color 0.2s",
   },
-
-  // ── Stats ──
   stats: {
     background: "#0D2B5E",
     padding: "36px 60px",
@@ -828,8 +810,6 @@ const s: Record<string, React.CSSProperties> = {
   statCard:  { display: "flex", flexDirection: "column", alignItems: "center", gap: 8 },
   statNum:   { fontFamily: "'Cormorant Garamond',serif", fontSize: 54, fontWeight: 700, color: "#C8A650", lineHeight: 1 },
   statLabel: { fontSize: 12, color: "rgba(255,255,255,0.55)", letterSpacing: "0.07em", textAlign: "center" },
-
-  // ── Sections ──
   section: { padding: "64px 60px", background: "#FFFFFF" },
   inner:   { maxWidth: 1060, margin: "0 auto" },
   secTitle: {
@@ -840,8 +820,6 @@ const s: Record<string, React.CSSProperties> = {
     lineHeight: 1.1,
     marginBottom: 32,
   },
-
-  // ── Services ──
   servicesGrid: { display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16 },
   serviceCard: {
     background: "#FFFFFF",
@@ -865,8 +843,6 @@ const s: Record<string, React.CSSProperties> = {
     marginBottom: 9,
   },
   serviceDesc: { fontSize: 13, color: "#6B7A99", lineHeight: 1.7, marginBottom: 16 },
-
-  // ── Countries ──
   countriesGrid: { display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 16 },
   countryCard: {
     background: "#FFFFFF",
@@ -881,18 +857,13 @@ const s: Record<string, React.CSSProperties> = {
     transition: "border-color 0.2s, box-shadow 0.2s",
     boxShadow: "0 2px 12px rgba(13,43,94,0.04)",
   },
-
-  // ── Why cards ──
   whyCard: {
     background: "#F7F5F0",
     border: "1px solid rgba(200,166,80,0.25)",
     borderLeft: "4px solid #C8A650",
     borderRadius: 4,
     padding: "24px",
-    marginBottom: 0,
   },
-
-  // ── Form ──
   form:  { display: "flex", flexDirection: "column", gap: 12 },
   input: {
     background: "rgba(255,255,255,0.07)",
@@ -915,8 +886,6 @@ const s: Record<string, React.CSSProperties> = {
     borderRadius: 4,
     textAlign: "center",
   },
-
-  // ── Footer ──
   footer: {
     background: "#F7F5F0",
     padding: "48px 60px 28px",
