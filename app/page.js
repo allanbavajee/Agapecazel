@@ -283,6 +283,7 @@ function HomeComponent() {
 
         @media(max-width:768px){
           .hamburger{display:flex!important}
+          .hero-agapecazel { font-size: 44px !important; }
           .desktop-nav{display:none!important}
           .mobile-lang{display:block!important}
           .mobile-menu.open{display:flex!important}
@@ -307,6 +308,7 @@ function HomeComponent() {
         }
         @media(max-width:480px){
           .hero-title{font-size:34px!important}
+          .hero-agapecazel { font-size: 34px !important; }
           .services-grid{grid-template-columns:1fr!important}
           .countries-grid{grid-template-columns:1fr!important}
           .why-photos-col{flex-direction:column!important}
@@ -388,7 +390,7 @@ function HomeComponent() {
             <div style={s.heroGlow} />
 
             <div style={{ ...s.heroContent, animation: "fadeUp 0.85s ease both", position: "relative" }}>
-             <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 72, fontWeight: 700, color: "#000000", lineHeight: 1.05, marginBottom: 0 }}>AGAPECAZEL</p>
+            <p className="hero-agapecazel" style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 72, fontWeight: 700, color: "#000000", lineHeight: 1.05, marginBottom: 0 }}>AGAPECAZEL</p>
               <p style={s.eyebrow} className="gold-line">{t.eyebrowHero}</p>
               <h1 className="hero-title" style={s.heroTitle}>
                 {t.heroTitle1}<br />
