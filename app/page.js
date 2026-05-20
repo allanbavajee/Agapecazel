@@ -327,7 +327,7 @@ function HomeComponent() {
           }}
         >
           <a href="#">
-            <img src="/logoA.png" alt="AgapeCazel" style={{ height: 150, width: "auto", display: "block" }} />
+            <img src="/logoAG.png" alt="AgapeCazel" style={{ height: 150, width: "auto", display: "block" }} />
           </a>
 
           <div className="desktop-nav" style={s.navLinks}>
