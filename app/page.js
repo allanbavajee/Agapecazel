@@ -3,8 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 
-export default dynamic(() => Promise.resolve(Home), { ssr: false });
-
 // ── Translations ────────────────────────────────────────────────────────────
 const T = {
   fr: {
@@ -182,13 +180,9 @@ function LangSwitcher({ lang, setLang, size = 28 }) {
   );
 }
 
-export default function Home() {
-  const [lang, setLang] = useState("fr");
-const [mounted, setMounted] = useState(false);
-
-useEffect(() => {
-  setMounted(true);
-}, []);
+function HomeComponent() {
+  const [lang, setLang]            = useState("fr");
+  const [mounted, setMounted]      = useState(false);
   const [scrolled, setScrolled]    = useState(false);
   const [statsStarted, setStats]   = useState(false);
   const [activeService, setActive] = useState(null);
@@ -197,6 +191,10 @@ useEffect(() => {
   const [formState, setFormState]  = useState("idle");
   const statsRef = useRef(null);
   const t = T[lang];
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 60);
@@ -226,6 +224,8 @@ useEffect(() => {
       setFormState("error");
     }
   }
+
+  if (!mounted) return null;
 
   return (
     <>
@@ -358,7 +358,7 @@ useEffect(() => {
             onClick={() => setMenu(false)}>{t.navCta}</a>
         </div>
 
-        {/* ── HERO — split-screen avec agapeazel4.png ── */}
+        {/* ── HERO ── */}
         <section
           className="hero-section"
           style={{
@@ -388,7 +388,7 @@ useEffect(() => {
             <div style={s.heroGlow} />
 
             <div style={{ ...s.heroContent, animation: "fadeUp 0.85s ease both", position: "relative" }}>
-              <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 11, fontWeight: 700, letterSpacing: "0.2em", color: "#000000", textTransform: "uppercase", marginBottom: 12 }}>AGAPECAZEL</p>
+              <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 11, fontWeight: 700, letterSpacing: "0.2em", color: "#000000", textTransform: "uppercase", marginBottom: 6 }}>AGAPECAZEL</p>
               <p style={s.eyebrow} className="gold-line">{t.eyebrowHero}</p>
               <h1 className="hero-title" style={s.heroTitle}>
                 {t.heroTitle1}<br />
@@ -402,7 +402,7 @@ useEffect(() => {
             </div>
           </div>
 
-          {/* Colonne image — agapeazel4.png */}
+          {/* Colonne image */}
           <div
             className="hero-img-col"
             style={{
@@ -430,7 +430,6 @@ useEffect(() => {
               background: "linear-gradient(to right, rgba(247,245,240,0.45) 0%, transparent 35%)",
               pointerEvents: "none",
             }} />
-            {/* Badge flottant */}
             <div style={{
               position: "absolute",
               bottom: 32,
@@ -498,7 +497,7 @@ useEffect(() => {
           </div>
         </section>
 
-        {/* ── WHY US — avec agapeazel5.png + agapeazel6.png ── */}
+        {/* ── WHY US ── */}
         <section id="a-propos" className="section-inner" style={s.section}>
           <div
             className="why-grid"
@@ -510,7 +509,6 @@ useEffect(() => {
               alignItems: "center",
             }}
           >
-            {/* Colonne texte */}
             <div>
               <p style={s.eyebrow} className="gold-line">{t.eyebrowWhy}</p>
               <h2 className="sec-title" style={{ ...s.secTitle, whiteSpace: "pre-line" }}>{t.titleWhy}</h2>
@@ -525,92 +523,21 @@ useEffect(() => {
               <a href="#contact" className="btn-primary" style={s.btnPrimary}>{t.whyCta}</a>
             </div>
 
-            {/* Colonne droite : photos + stat cards */}
-            <div
-              className="why-photos-col"
-              style={{ display: "flex", flexDirection: "column", gap: 14 }}
-            >
-              {/* Photo 1 — agapeazel5.png */}
-              <div
-                className="why-photo"
-                style={{
-                  position: "relative",
-                  borderRadius: 4,
-                  overflow: "hidden",
-                  boxShadow: "0 6px 28px rgba(13,43,94,0.13)",
-                }}
-              >
-                <img
-                  src="/agapeazel5.png"
-                  alt="Équipe AgapeCazel"
-                  style={{
-                    width: "100%",
-                    height: 190,
-                    objectFit: "cover",
-                    objectPosition: "center top",
-                    display: "block",
-                  }}
-                />
-                <div style={{
-                  position: "absolute",
-                  inset: 0,
-                  background: "linear-gradient(to top, rgba(13,43,94,0.3) 0%, transparent 55%)",
-                  pointerEvents: "none",
-                }} />
-                <p style={{
-                  position: "absolute",
-                  bottom: 10,
-                  left: 12,
-                  color: "#fff",
-                  fontSize: 11,
-                  letterSpacing: "0.1em",
-                  fontWeight: 500,
-                }}>
-                  NOTRE ÉQUIPE
-                </p>
+            <div className="why-photos-col" style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+              <div className="why-photo" style={{ position: "relative", borderRadius: 4, overflow: "hidden", boxShadow: "0 6px 28px rgba(13,43,94,0.13)" }}>
+                <img src="/agapeazel5.png" alt="Équipe AgapeCazel"
+                  style={{ width: "100%", height: 190, objectFit: "cover", objectPosition: "center top", display: "block" }} />
+                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(13,43,94,0.3) 0%, transparent 55%)", pointerEvents: "none" }} />
+                <p style={{ position: "absolute", bottom: 10, left: 12, color: "#fff", fontSize: 11, letterSpacing: "0.1em", fontWeight: 500 }}>NOTRE ÉQUIPE</p>
               </div>
 
-              {/* Photo 2 — agapeazel6.png */}
-              <div
-                className="why-photo"
-                style={{
-                  position: "relative",
-                  borderRadius: 4,
-                  overflow: "hidden",
-                  boxShadow: "0 6px 28px rgba(13,43,94,0.13)",
-                }}
-              >
-                <img
-                  src="/agapeazel6.png"
-                  alt="Conseiller AgapeCazel"
-                  style={{
-                    width: "100%",
-                    height: 190,
-                    objectFit: "cover",
-                    objectPosition: "center top",
-                    display: "block",
-                  }}
-                />
-                <div style={{
-                  position: "absolute",
-                  inset: 0,
-                  background: "linear-gradient(to top, rgba(13,43,94,0.3) 0%, transparent 55%)",
-                  pointerEvents: "none",
-                }} />
-                <p style={{
-                  position: "absolute",
-                  bottom: 10,
-                  left: 12,
-                  color: "#fff",
-                  fontSize: 11,
-                  letterSpacing: "0.1em",
-                  fontWeight: 500,
-                }}>
-                  NOS CONSEILLERS
-                </p>
+              <div className="why-photo" style={{ position: "relative", borderRadius: 4, overflow: "hidden", boxShadow: "0 6px 28px rgba(13,43,94,0.13)" }}>
+                <img src="/agapeazel6.png" alt="Conseiller AgapeCazel"
+                  style={{ width: "100%", height: 190, objectFit: "cover", objectPosition: "center top", display: "block" }} />
+                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(13,43,94,0.3) 0%, transparent 55%)", pointerEvents: "none" }} />
+                <p style={{ position: "absolute", bottom: 10, left: 12, color: "#fff", fontSize: 11, letterSpacing: "0.1em", fontWeight: 500 }}>NOS CONSEILLERS</p>
               </div>
 
-              {/* Stat cards */}
               {t.whyCards.map((card) => (
                 <div key={card.label} style={s.whyCard}>
                   <p style={{ color: "var(--gold-dark)", fontSize: 11, letterSpacing: "0.12em", marginBottom: 6 }}>{card.label}</p>
@@ -688,6 +615,8 @@ useEffect(() => {
     </>
   );
 }
+
+export default dynamic(() => Promise.resolve(HomeComponent), { ssr: false });
 
 // ── Styles ──────────────────────────────────────────────────────────────────
 const s = {
