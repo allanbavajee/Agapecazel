@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
+
+export default dynamic(() => Promise.resolve(Home), { ssr: false });
 
 // ── Translations ────────────────────────────────────────────────────────────
 const T = {
@@ -180,7 +183,12 @@ function LangSwitcher({ lang, setLang, size = 28 }) {
 }
 
 export default function Home() {
-  const [lang, setLang]            = useState("fr");
+  const [lang, setLang] = useState("fr");
+const [mounted, setMounted] = useState(false);
+
+useEffect(() => {
+  setMounted(true);
+}, []);
   const [scrolled, setScrolled]    = useState(false);
   const [statsStarted, setStats]   = useState(false);
   const [activeService, setActive] = useState(null);
