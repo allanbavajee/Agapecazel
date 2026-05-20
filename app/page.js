@@ -388,7 +388,7 @@ function HomeComponent() {
             <div style={s.heroGlow} />
 
             <div style={{ ...s.heroContent, animation: "fadeUp 0.85s ease both", position: "relative" }}>
-              <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 11, fontWeight: 700, letterSpacing: "0.2em", color: "#000000", textTransform: "uppercase", marginBottom: 6 }}>AGAPECAZEL</p>
+             <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 72, fontWeight: 700, color: "#000000", lineHeight: 1.05, marginBottom: 0 }}>AGAPECAZEL</p>
               <p style={s.eyebrow} className="gold-line">{t.eyebrowHero}</p>
               <h1 className="hero-title" style={s.heroTitle}>
                 {t.heroTitle1}<br />
