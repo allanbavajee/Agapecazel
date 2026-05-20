@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 
-// ── Translations ────────────────────────────────────────────────────────────
+// ── Translations ─────────────────────────────────────────────────────
 const T = {
   fr: {
     navLinks:   ["Services", "Implantations", "À propos", "Carrières"],
