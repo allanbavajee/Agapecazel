@@ -317,7 +317,7 @@ export default function Home() {
           }}
         >
           <a href="#">
-            <img src="/logo.png" alt="AgapeCazel" style={{ height: 176, width: "auto", display: "block" }} />
+            <img src="/logoA.png" alt="AgapeCazel" style={{ height: 176, width: "auto", display: "block" }} />
           </a>
 
           <div className="desktop-nav" style={s.navLinks}>
