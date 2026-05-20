@@ -380,7 +380,7 @@ export default function Home() {
             <div style={s.heroGlow} />
 
             <div style={{ ...s.heroContent, animation: "fadeUp 0.85s ease both", position: "relative" }}>
-              <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 13, fontWeight: 700, letterSpacing: "0.25em", color: "var(--navy)", marginBottom: 6, textTransform: "uppercase" }}>AGAPECAZEL</p>
+              <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 11, fontWeight: 700, letterSpacing: "0.2em", color: "#000000", textTransform: "uppercase", marginBottom: 12 }}>AGAPECAZEL</p>
               <p style={s.eyebrow} className="gold-line">{t.eyebrowHero}</p>
               <h1 className="hero-title" style={s.heroTitle}>
                 {t.heroTitle1}<br />
