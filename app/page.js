@@ -56,7 +56,7 @@ const T = {
     successSub: "Notre équipe vous contacte sous 24h.",
     successBtn: "Envoyer une autre demande",
     footerLinks: ["Services", "Implantations", "À propos", "Carrières", "Contact"],
-    footerSub:  "Centre d'appel international · Depuis 2009",
+    footerSub:  "Centre d'appel international · Depuis 2012",
     footerCopy: "© 2025 Agapecazel. Tous droits réservés.",
   },
   en: {
@@ -446,7 +446,7 @@ function HomeComponent() {
                 CENTRE D'APPEL
               </p>
               <p style={{ color: "#fff", fontSize: 15, fontFamily: "'Cormorant Garamond',serif", fontWeight: 600 }}>
-                Île Maurice · Depuis 2009
+                Île Maurice · Depuis 2012
               </p>
             </div>
           </div>
@@ -593,7 +593,7 @@ function HomeComponent() {
           <div className="footer-inner" style={s.footerInner}>
             <div>
               <p style={s.navLogo}>AGAPECAZEL</p>
-              <p style={{ color: "var(--text-muted)", fontSize: 12, marginTop: 6 }}>Centre d'appel international · Depuis 2009</p>
+              <p style={{ color: "var(--text-muted)", fontSize: 12, marginTop: 6 }}>Centre d'appel international · Depuis 2012</p>
             </div>
             <div style={{ display: "flex", gap: 18, flexWrap: "wrap" }}>
               {t.footerLinks.map((l) => (
