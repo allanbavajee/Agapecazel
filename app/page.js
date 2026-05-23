@@ -9,13 +9,13 @@ const T = {
     navLinks:   ["Services", "Implantations", "À propos", "Carrières"],
     navAnchors: ["services", "implantations", "a-propos", "carrieres"],
     navCta: "Devis gratuit",
-    eyebrowHero: "Centre d'appel · 15 ans d'excellence",
+    eyebrowHero: "Centre d'appel · 14 ans d'excellence",
     heroTitle1: "Votre Succès,",
     heroTitle2: "commence ici.",
     heroSub: "Nous mettons en relation nos partenaires avec des prospects ciblés et qualifiés selon des critères précis afin d'optimiser leur taux de transformation.",
     heroCta1: "Demander un devis",
     heroCta2: "Découvrir nos services",
-    stats: ["ans d'expérience", "pays d'implantation", "collaborateurs", "disponibilité"],
+    stats: ["ans d'expérience", "pays d'implantation", "disponibilité"],
     eyebrowServices: "Ce que nous faisons",
     titleServices: "Nos prestations",
     services: [
@@ -30,6 +30,7 @@ const T = {
       { name: "Île Maurice", code: "mu", role: "Siège régional" },
       { name: "France",      code: "fr", role: "Marché européen" },
       { name: "Belgique",    code: "be", role: "Support et expansion" },
+      { name: "Canada",      code: "ca", role: "Marché nord-américain" },
     ],
     eyebrowWhy: "Pourquoi Agapecazel",
     titleWhy: "Centre d'appel spécialisé\nen génération de rendez-vous qualifiés",
@@ -63,13 +64,13 @@ const T = {
     navLinks:   ["Services", "Locations", "About", "Careers"],
     navAnchors: ["services", "implantations", "a-propos", "carrieres"],
     navCta: "Free Quote",
-    eyebrowHero: "International call centre · 15 years of excellence",
+    eyebrowHero: "International call centre · 14 years of excellence",
     heroTitle1: "Your Success,",
     heroTitle2: "starts here.",
     heroSub: "We connect our partners with targeted and qualified prospects based on precise criteria to optimise their conversion rate.",
     heroCta1: "Request a quote",
     heroCta2: "Discover our services",
-    stats: ["years of experience", "countries", "team members", "availability"],
+    stats: ["years of experience", "countries", "availability"],
     eyebrowServices: "What we do",
     titleServices: "Our services",
     services: [
@@ -84,6 +85,7 @@ const T = {
       { name: "Mauritius", code: "mu", role: "Regional headquarters" },
       { name: "France",    code: "fr", role: "European market" },
       { name: "Belgium",   code: "be", role: "Support & expansion" },
+      { name: "Canada",    code: "ca", role: "North American market" },
     ],
     eyebrowWhy: "Why Agapecazel",
     titleWhy: "Specialised call centre\nfor qualified lead generation",
@@ -110,16 +112,16 @@ const T = {
     successSub: "Our team will contact you within 24h.",
     successBtn: "Send another request",
     footerLinks: ["Services", "Locations", "About", "Careers", "Contact"],
-    footerSub:  "International call centre · Since 2009",
+    footerSub:  "International call centre · Since 2012",
     footerCopy: "© 2025 Agapecazel. All rights reserved.",
   },
 };
 
+// ── 3 stats: 14 ans, 4 pays, 7/7 ────────────────────────────────────
 const STATS_VALUES = [
-  { value: 15,  suffix: "+" },
-  { value: 6,   suffix: ""  },
-  { value: 300, suffix: "+" },
-  { value: 24,  suffix: "/7"},
+  { value: 14, suffix: "+" },
+  { value: 4,  suffix: ""  },
+  { value: 7,  suffix: "/7"},
 ];
 
 function useCounter(target, duration = 1800, started = false) {
@@ -194,6 +196,9 @@ function HomeComponent() {
 
   useEffect(() => {
     setMounted(true);
+    // Fallback : démarre les compteurs après 800 ms si l'observer ne se déclenche pas
+    const timer = setTimeout(() => setStats(true), 800);
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
@@ -203,7 +208,10 @@ function HomeComponent() {
   }, []);
 
   useEffect(() => {
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setStats(true); }, { threshold: 0.3 });
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) setStats(true); },
+      { threshold: 0.3 }
+    );
     if (statsRef.current) obs.observe(statsRef.current);
     return () => obs.disconnect();
   }, []);
@@ -293,10 +301,10 @@ function HomeComponent() {
           .hero-title{font-size:44px!important}
           .hero-sub{font-size:14px!important}
           .stats-section{padding:28px 22px!important}
-          .stats-grid{grid-template-columns:repeat(2,1fr)!important;gap:24px!important}
+          .stats-grid{grid-template-columns:repeat(3,1fr)!important;gap:16px!important}
           .section-inner{padding:48px 22px!important}
           .services-grid{grid-template-columns:1fr 1fr!important;gap:12px!important}
-          .countries-grid{grid-template-columns:repeat(3,1fr)!important;gap:10px!important}
+          .countries-grid{grid-template-columns:repeat(2,1fr)!important;gap:10px!important}
           .why-grid{grid-template-columns:1fr!important;gap:32px!important}
           .why-photos-col{flex-direction:row!important}
           .why-photos-col > div{flex:1!important}
@@ -312,6 +320,7 @@ function HomeComponent() {
           .services-grid{grid-template-columns:1fr!important}
           .countries-grid{grid-template-columns:1fr!important}
           .why-photos-col{flex-direction:column!important}
+          .stats-grid{grid-template-columns:repeat(3,1fr)!important;gap:8px!important}
         }
       `}</style>
 
@@ -390,7 +399,7 @@ function HomeComponent() {
             <div style={s.heroGlow} />
 
             <div style={{ ...s.heroContent, animation: "fadeUp 0.85s ease both", position: "relative" }}>
-            <p className="hero-agapecazel" style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 72, fontWeight: 700, color: "#0D2B5E", lineHeight: 1.05, marginBottom: 0 }}>AGAPECAZEL</p>
+              <p className="hero-agapecazel" style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 72, fontWeight: 700, color: "#0D2B5E", lineHeight: 1.05, marginBottom: 0 }}>AGAPECAZEL</p>
               <p style={s.eyebrow} className="gold-line">{t.eyebrowHero}</p>
               <h1 className="hero-title" style={s.heroTitle}>
                 {t.heroTitle1}<br />
@@ -741,10 +750,10 @@ const s = {
     padding: "36px 60px",
   },
   statsGrid: {
-    maxWidth: 1060,
+    maxWidth: 860,
     margin: "0 auto",
     display: "grid",
-    gridTemplateColumns: "repeat(4,1fr)",
+    gridTemplateColumns: "repeat(3,1fr)",
     gap: 28,
   },
   statCard:  { display: "flex", flexDirection: "column", alignItems: "center", gap: 8 },
@@ -783,7 +792,7 @@ const s = {
     marginBottom: 9,
   },
   serviceDesc: { fontSize: 13, color: "#6B7A99", lineHeight: 1.7, marginBottom: 16 },
-  countriesGrid: { display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 16 },
+  countriesGrid: { display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16 },
   countryCard: {
     background: "#FFFFFF",
     border: "1px solid rgba(13,43,94,0.1)",
