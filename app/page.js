@@ -3,12 +3,16 @@
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 
+// URL du CRM (modifiable via la variable d'environnement NEXT_PUBLIC_CRM_URL)
+const CRM_URL = process.env.NEXT_PUBLIC_CRM_URL || "https://agapecazel-crm.vercel.app";
+
 // ── Translations ─────────────────────────────────────────────────────
 const T = {
   fr: {
     navLinks:   ["Services", "Implantations", "À propos", "Carrières"],
     navAnchors: ["services", "implantations", "a-propos", "carrieres"],
     navCta: "Devis gratuit",
+    crmBtn: "Accès CRM",
     eyebrowHero: "Centre d'appel · 14 ans d'excellence",
     heroTitle1: "Votre Succès,",
     heroTitle2: "commence ici.",
@@ -63,6 +67,7 @@ const T = {
     navLinks:   ["Services", "Locations", "About", "Careers"],
     navAnchors: ["services", "implantations", "a-propos", "carrieres"],
     navCta: "Free Quote",
+    crmBtn: "CRM Access",
     eyebrowHero: "International call centre · 14 years of excellence",
     heroTitle1: "Your Success,",
     heroTitle2: "starts here.",
@@ -266,6 +271,7 @@ function HomeComponent() {
         .country-card:hover{border-color:var(--gold)!important;box-shadow:0 4px 20px rgba(200,166,80,0.12)!important}
         .btn-primary:hover{background:var(--navy-mid)!important;color:#fff!important}
         .btn-gold:hover{opacity:0.88!important}
+        .btn-crm:hover{background:var(--navy)!important;color:#fff!important}
         .submit-btn:hover{opacity:0.88!important}
         input:focus,textarea:focus{border-color:var(--gold)!important;outline:none;box-shadow:0 0 0 3px rgba(200,166,80,0.12)!important}
 
@@ -341,6 +347,7 @@ function HomeComponent() {
             {t.navLinks.map((l, i) => (
               <a key={l} href={`#${t.navAnchors[i]}`} className="nav-link" style={s.navLink}>{l}</a>
             ))}
+            <a href={CRM_URL} target="_blank" rel="noopener noreferrer" className="btn-crm" style={s.crmCta}>🔒 {t.crmBtn}</a>
             <a href="#contact" className="btn-gold" style={s.navCta}>{t.navCta}</a>
             <LangSwitcher lang={lang} setLang={setLang} size={28} />
           </div>
@@ -362,6 +369,9 @@ function HomeComponent() {
           {t.navLinks.map((l, i) => (
             <a key={l} href={`#${t.navAnchors[i]}`} className="mobile-link" onClick={() => setMenu(false)}>{l}</a>
           ))}
+          <a href={CRM_URL} target="_blank" rel="noopener noreferrer" className="btn-crm"
+            style={{ ...s.crmCta, textAlign: "center", marginTop: 12, display: "block" }}
+            onClick={() => setMenu(false)}>🔒 {t.crmBtn}</a>
           <a href="#contact" className="btn-gold"
             style={{ ...s.btnGold, textAlign: "center", marginTop: 12 }}
             onClick={() => setMenu(false)}>{t.navCta}</a>
@@ -658,6 +668,17 @@ const s = {
     fontWeight: 500,
     letterSpacing: "0.06em",
     transition: "opacity 0.2s",
+  },
+  crmCta:   {
+    background: "transparent",
+    color: "#0D2B5E",
+    border: "1.5px solid #0D2B5E",
+    padding: "8px 18px",
+    borderRadius: 2,
+    fontSize: 13,
+    fontWeight: 500,
+    letterSpacing: "0.06em",
+    transition: "background 0.2s, color 0.2s",
   },
   navLogo: { fontFamily: "'Cormorant Garamond',serif", fontSize: 17, fontWeight: 700, color: "#0D2B5E", letterSpacing: "0.12em" },
   heroPattern: {
